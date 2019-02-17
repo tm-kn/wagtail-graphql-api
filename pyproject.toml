@@ -1,0 +1,22 @@
+[build-system]
+requires = ["flit"]
+build-backend = "flit.buildapi"
+
+[tool.flit.metadata]
+module = "wagtail_graphql"
+dist-name = "wagtail-graphql-api"
+author = "Tomasz Knapik"
+author-email = "hi@tmkn.org"
+license = "BSD"
+home-page = "https://github.com/tm-kn/wagtail-graphql-api"
+requires-python=">=3.6,<4"
+requires = [
+    "graphene-django >=2.2,<3",
+    "wagtail >=2.4,<3",
+]
+classifiers=[
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3",
+]
+description-file="README.rst"
