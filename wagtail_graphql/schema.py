@@ -1,7 +1,7 @@
+from wagtail.core.models import Page
+
 import graphene
 import graphene_django
-
-from wagtail.core.models import Page
 
 from wagtail_graphql.utils import get_base_queryset_for_page_model_or_qs
 
