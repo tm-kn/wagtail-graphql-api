@@ -2,7 +2,7 @@ import collections
 
 from wagtail.core.models import get_page_models, Page
 
-from wagtail_graphql.models import GraphQLEnabledPage
+from wagtail_graphql.models import GraphQLEnabledPage, GraphQLField
 
 
 class Inventory:
@@ -25,10 +25,9 @@ class Inventory:
         fields = self.__page_model_fields[model] = []
 
         for raw_field in raw_fields:
-            if not isinstance(raw_field, str):
-                raise ValueError(
-                    f'Field must be a string, not {type(raw_field)}'
-                )
+            if not isinstance(raw_field, GraphQLField):
+                raise ValueError('Field must be a GraphQLField instance, not '
+                                 f'{type(raw_field)}')
             fields.append(raw_field)
 
     @property

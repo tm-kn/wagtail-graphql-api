@@ -67,12 +67,10 @@ class PageInterface(graphene.Interface):
 def create_page_type(model):
     def get_meta(model):
         fields = inventory.get_page_model_fields_for(model)
-        if len(fields) == 0:
-            fields = ('id', )
         return type('Meta', tuple(), {
             'model': model,
             'interfaces': (PageInterface, ),
-            'only_fields': fields,
+            'only_fields': tuple([field.name for field in fields]) or ('id', ),
         })
 
     return type(
