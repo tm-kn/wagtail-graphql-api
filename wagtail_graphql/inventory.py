@@ -1,6 +1,6 @@
 import collections
 
-from wagtail.core.models import get_page_models, Page
+from wagtail.core.models import Page, get_page_models
 
 from wagtail_graphql.models import GraphQLEnabledPage, GraphQLField
 
