@@ -80,3 +80,7 @@ STATICFILES_FINDERS = (
 ROOT_URLCONF = 'wagtail_graphql.tests.urls'
 
 WAGTAIL_SITE_NAME = "Test"
+
+GRAPHENE = {
+    'SCHEMA': 'wagtail_graphql.schema.schema'
+}
