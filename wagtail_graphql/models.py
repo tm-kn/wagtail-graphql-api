@@ -1,0 +1,2 @@
+class GraphQLEnabledPage:
+    pass
