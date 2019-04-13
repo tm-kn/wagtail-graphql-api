@@ -79,6 +79,9 @@ class BasePageType(graphene_django.DjangoObjectType):
     class Meta:
         model = Page
         interfaces = (PageInterface, )
+        # Do not resolve any fields on the model, need to set at least for
+        # Graphene to take notice.
+        only_fields = ('id',)
 
 
 class Query(graphene.ObjectType):
