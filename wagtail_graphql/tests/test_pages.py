@@ -10,7 +10,7 @@ class TestGraphQLPages(test.TestCase):
     def test_graphql_pages_query_returns_200_ok(self):
         query = """
         query {
-            pages {
+            pagesWagtailcorePage {
                 id
             }
         }
