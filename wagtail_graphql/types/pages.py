@@ -1,8 +1,23 @@
 from wagtail.core.models import Page
 
 import graphene
+import graphene_django
 
 from wagtail_graphql.utils import get_base_queryset_for_page_model_or_qs
+
+
+def create_page_type(model, fields):
+    def get_meta():
+        return type(
+            'Meta', tuple(), {
+                'model': model,
+                'interfaces': (PageInterface, ),
+                'only_fields': tuple([field.name
+                                      for field in fields]) or ('id', ),
+            })
+
+    return type(f'{model.__name__}ObjectType',
+                (graphene_django.DjangoObjectType, ), {'Meta': get_meta()})
 
 
 class PageInterface(graphene.Interface):
