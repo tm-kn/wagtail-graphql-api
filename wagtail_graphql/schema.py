@@ -1,6 +1,6 @@
 import graphene
 
-from wagtail_graphql.mixins import PageQueryMixin
+from wagtail_graphql.query_mixins.pages import PageQueryMixin
 
 
 class Query(graphene.ObjectType, PageQueryMixin):
