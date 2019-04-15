@@ -23,7 +23,7 @@ def get_page_types():
         # Define a field name that will be used by the GraphQL
         # query.
         field_name = (f'pages_{page_model._meta.app_label}_'
-                      f'{page_model.__class__.__name__}')
+                      f'{page_model.__name__}')
 
         # Define a GraphQL data type for that specific page type.
         yield field_name, graphene.List(object_type, name=field_name)
