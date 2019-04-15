@@ -1,10 +1,8 @@
-import collections
-
 from wagtail.core.models import Page, get_page_models
 
-from wagtail_graphql.models import GraphQLEnabledPage
 from wagtail_graphql.inventory.base import ModelInventory
-from wagtail_graphql.types.pages import create_page_type
+from wagtail_graphql.models import GraphQLEnabledPage
+from wagtail_graphql.types import create_page_type
 
 
 class PageInventory(ModelInventory):

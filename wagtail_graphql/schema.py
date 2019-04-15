@@ -1,9 +1,9 @@
 import graphene
 
-from wagtail_graphql.query_mixins.pages import PageQueryMixin
+from wagtail_graphql.query_mixins import PageQueryMixin, SnippetQueryMixin
 
 
-class Query(graphene.ObjectType, PageQueryMixin):
+class Query(graphene.ObjectType, PageQueryMixin, SnippetQueryMixin):
     pass
 
 
