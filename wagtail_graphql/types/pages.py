@@ -7,20 +7,24 @@ from wagtail_graphql.utils import get_base_queryset_for_page_model_or_qs
 
 
 def create_page_type(model, fields):
-    def get_meta():
-        return type(
-            'Meta', tuple(), {
-                'model': model,
-                'interfaces': (PageInterface, ),
-                'only_fields': tuple([field.name
-                                      for field in fields]) or ('id', ),
-            })
+    """
+    Generate a DjangoObjectType for a Wagtail page.
+    """
+    meta = type('Meta', tuple(), {
+        'model': model,
+        'interfaces': (PageInterface, ),
+        'only_fields': tuple(field.name
+                                for field in fields) or ('id', ),
+    })
 
     return type(f'{model.__name__}ObjectType',
-                (graphene_django.DjangoObjectType, ), {'Meta': get_meta()})
+                (graphene_django.DjangoObjectType, ), {'Meta': meta})
 
 
 class PageInterface(graphene.Interface):
+    """
+    Set basic fields exposed on every single page object.
+    """
     id = graphene.Int()
     depth = graphene.Int()
     page_type = graphene.String()
@@ -33,7 +37,7 @@ class PageInterface(graphene.Interface):
     parent = graphene.Field(lambda: PageInterface)
     next_siblings = graphene.List(lambda: PageInterface)
     previous_siblings = graphene.List(lambda: PageInterface)
-    descdendants = graphene.List(lambda: PageInterface)
+    descendants = graphene.List(lambda: PageInterface)
     ancestors = graphene.List(lambda: PageInterface)
 
     def resolve_page_type(self, info):
