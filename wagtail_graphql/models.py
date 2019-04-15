@@ -1,4 +1,8 @@
-class GraphQLEnabledPage:
+class GraphQLEnabledModel:
+    pass
+
+
+class GraphQLEnabledPage(GraphQLEnabledModel):
     pass
 
 
