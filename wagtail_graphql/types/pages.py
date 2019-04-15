@@ -10,12 +10,12 @@ def create_page_type(model, fields):
     """
     Generate a DjangoObjectType for a Wagtail page.
     """
-    meta = type('Meta', tuple(), {
-        'model': model,
-        'interfaces': (PageInterface, ),
-        'only_fields': tuple(field.name
-                                for field in fields) or ('id', ),
-    })
+    meta = type(
+        'Meta', tuple(), {
+            'model': model,
+            'interfaces': (PageInterface, ),
+            'only_fields': tuple(field.name for field in fields) or ('id', ),
+        })
 
     return type(f'{model.__name__}ObjectType',
                 (graphene_django.DjangoObjectType, ), {'Meta': meta})
