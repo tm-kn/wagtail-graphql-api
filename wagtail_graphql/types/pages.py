@@ -1,8 +1,8 @@
 from wagtail.core.models import Page
 
 import graphene
-import graphene_django
 
+from wagtail_graphql.types.base import create_model_type
 from wagtail_graphql.utils import get_base_queryset_for_page_model_or_qs
 
 
@@ -10,15 +10,11 @@ def create_page_type(model, fields):
     """
     Generate a DjangoObjectType for a Wagtail page.
     """
-    meta = type(
-        'Meta', tuple(), {
-            'model': model,
+    return create_model_type(
+        model, fields, meta_attrs={
             'interfaces': (PageInterface, ),
-            'only_fields': tuple(field.name for field in fields) or ('id', ),
-        })
-
-    return type(f'{model.__name__}ObjectType',
-                (graphene_django.DjangoObjectType, ), {'Meta': meta})
+        }
+    )
 
 
 class PageInterface(graphene.Interface):
@@ -41,34 +37,42 @@ class PageInterface(graphene.Interface):
     ancestors = graphene.List(lambda: PageInterface)
 
     def resolve_page_type(self, info):
-        return '.'.join([
-            self.content_type.app_label,
-            self.content_type.model_class().__name__
-        ])
+        return '.'.join(
+            [
+                self.content_type.app_label,
+                self.content_type.model_class().__name__
+            ]
+        )
 
     def resolve_children(self, info):
-        return get_base_queryset_for_page_model_or_qs(self.get_children(),
-                                                      info)
+        return get_base_queryset_for_page_model_or_qs(
+            self.get_children(), info
+        )
 
     def resolve_descendants(self, info):
-        return get_base_queryset_for_page_model_or_qs(self.get_children(),
-                                                      info)
+        return get_base_queryset_for_page_model_or_qs(
+            self.get_children(), info
+        )
 
     def resolve_ancestors(self, info):
-        return get_base_queryset_for_page_model_or_qs(self.get_children(),
-                                                      info)
+        return get_base_queryset_for_page_model_or_qs(
+            self.get_children(), info
+        )
 
     def resolve_siblings(self, info):
         return get_base_queryset_for_page_model_or_qs(
-            self.get_siblings().exclude(pk=self.pk), info)
+            self.get_siblings().exclude(pk=self.pk), info
+        )
 
     def resolve_next_siblings(self, info):
         return get_base_queryset_for_page_model_or_qs(
-            self.get_next_siblings().exclude(pk=self.pk), info)
+            self.get_next_siblings().exclude(pk=self.pk), info
+        )
 
     def resolve_previous_siblings(self, info):
         return get_base_queryset_for_page_model_or_qs(
-            self.get_previous_siblings().exclude(pk=self.pk), info)
+            self.get_previous_siblings().exclude(pk=self.pk), info
+        )
 
     def resolve_parent(self, info):
         parent = self.get_parent()

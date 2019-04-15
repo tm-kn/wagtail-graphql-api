@@ -19,7 +19,7 @@ def get_page_types():
     """
     Generate GraphQL page types dynamically.
     """
-    for page_model, object_type in inventory.pages.page_graphql_types:
+    for page_model, object_type in inventory.pages.graphql_types:
         # Define a field name that will be used by the GraphQL
         # query.
         field_name = (f'pages_{page_model._meta.app_label}_'
