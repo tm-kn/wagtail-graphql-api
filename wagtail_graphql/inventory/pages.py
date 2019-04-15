@@ -74,19 +74,3 @@ class PageInventory:
             assert page_model not in self.__page_graphql_types, (
                 f'{page_model} has already been converted to a GraphQL object')
             self.__page_graphql_types[page_model] = graphql_type
-
-
-class Inventory:
-    """
-    Store metadata about objects exposed to the GraphQL endpoints.
-    """
-
-    def __init__(self):
-        self.__page_inventory = PageInventory()
-
-    @property
-    def pages(self):
-        return self.__page_inventory
-
-
-inventory = Inventory()
