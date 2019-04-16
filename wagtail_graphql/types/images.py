@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 def get_allowed_rendition_filters():
     return frozenset(
         itertools.chain(
-            settings.WAGTAIL_GRAPHQL_ALLOWED_RENDITIONS,
+            settings.WAGTAIL_GRAPHQL_ALLOWED_RENDITION_FILTERS,
             [settings.WAGTAIL_GRAPHQL_DEFAULT_RENDITION_FILTER],
         )
     )
