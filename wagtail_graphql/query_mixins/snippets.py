@@ -1,5 +1,3 @@
-import graphene
-
 from wagtail_graphql.inventory import inventory
 from wagtail_graphql.types import QuerySetList
 from wagtail_graphql.utils import get_base_queryset_for_model_or_qs
@@ -35,5 +33,6 @@ def get_snippet_types():
 
 
 # Create a query mixin dynamically.
-SnippetQueryMixin = type('SnippetQueryMixin', tuple(),
-                         dict(get_snippet_types()))
+SnippetQueryMixin = type(
+    'SnippetQueryMixin', tuple(), dict(get_snippet_types())
+)
