@@ -1,9 +1,10 @@
-import graphene
-
 from django.utils.translation import ugettext_lazy as _
 
-from wagtail_graphql.query_mixins import (ImageQueryMixin, PageQueryMixin,
-                                          SnippetQueryMixin)
+import graphene
+
+from wagtail_graphql.query_mixins import (
+    ImageQueryMixin, PageQueryMixin, SnippetQueryMixin
+)
 
 
 class WagtailQuery(
