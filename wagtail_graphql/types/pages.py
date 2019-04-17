@@ -3,6 +3,7 @@ from wagtail.core.models import Page
 import graphene
 
 from wagtail_graphql.types.base import create_model_type
+from wagtail_graphql.types.structures import QuerySetList
 from wagtail_graphql.utils import get_base_queryset_for_page_model_or_qs
 
 
@@ -28,13 +29,13 @@ class PageInterface(graphene.Interface):
     seo_title = graphene.String()
     seo_description = graphene.String()
     show_in_menus = graphene.Boolean()
-    children = graphene.List(lambda: PageInterface)
-    siblings = graphene.List(lambda: PageInterface)
+    children = QuerySetList(lambda: PageInterface, enable_search=True)
+    siblings = QuerySetList(lambda: PageInterface, enable_search=True)
     parent = graphene.Field(lambda: PageInterface)
-    next_siblings = graphene.List(lambda: PageInterface)
-    previous_siblings = graphene.List(lambda: PageInterface)
-    descendants = graphene.List(lambda: PageInterface)
-    ancestors = graphene.List(lambda: PageInterface)
+    next_siblings = QuerySetList(lambda: PageInterface, enable_search=True)
+    previous_siblings = QuerySetList(lambda: PageInterface, enable_search=True)
+    descendants = QuerySetList(lambda: PageInterface, enable_search=True)
+    ancestors = QuerySetList(lambda: PageInterface, enable_search=True)
 
     def resolve_page_type(self, info):
         return '.'.join(
@@ -44,41 +45,41 @@ class PageInterface(graphene.Interface):
             ]
         )
 
-    def resolve_children(self, info):
+    def resolve_children(self, info, **kwargs):
         return get_base_queryset_for_page_model_or_qs(
-            self.get_children(), info
+            self.get_children(), info, **kwargs
         )
 
-    def resolve_descendants(self, info):
+    def resolve_descendants(self, info, **kwargs):
         return get_base_queryset_for_page_model_or_qs(
-            self.get_children(), info
+            self.get_children(), info, **kwargs
         )
 
-    def resolve_ancestors(self, info):
+    def resolve_ancestors(self, info, **kwargs):
         return get_base_queryset_for_page_model_or_qs(
-            self.get_children(), info
+            self.get_children(), info, **kwargs
         )
 
-    def resolve_siblings(self, info):
+    def resolve_siblings(self, info, **kwargs):
         return get_base_queryset_for_page_model_or_qs(
-            self.get_siblings().exclude(pk=self.pk), info
+            self.get_siblings().exclude(pk=self.pk), info, **kwargs
         )
 
-    def resolve_next_siblings(self, info):
+    def resolve_next_siblings(self, info, **kwargs):
         return get_base_queryset_for_page_model_or_qs(
-            self.get_next_siblings().exclude(pk=self.pk), info
+            self.get_next_siblings().exclude(pk=self.pk), info, **kwargs
         )
 
-    def resolve_previous_siblings(self, info):
+    def resolve_previous_siblings(self, info, **kwargs):
         return get_base_queryset_for_page_model_or_qs(
-            self.get_previous_siblings().exclude(pk=self.pk), info
+            self.get_previous_siblings().exclude(pk=self.pk), info, **kwargs
         )
 
-    def resolve_parent(self, info):
+    def resolve_parent(self, info, **kwargs):
         parent = self.get_parent()
         if parent is None:
             return
-        qs = get_base_queryset_for_page_model_or_qs(Page, info)
+        qs = get_base_queryset_for_page_model_or_qs(Page, info, **kwargs)
         return qs.get(pk=parent.pk)
 
     def resolve_seo_title(self, info):

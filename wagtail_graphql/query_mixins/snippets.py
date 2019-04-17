@@ -1,6 +1,6 @@
-import graphene
-
 from wagtail_graphql.inventory import inventory
+from wagtail_graphql.types import QuerySetList
+from wagtail_graphql.utils import get_base_queryset_for_model_or_qs
 
 
 def resolve_snippets_create(model):
@@ -8,12 +8,12 @@ def resolve_snippets_create(model):
     Create a function to resolve all pages for a certain snippet model.
     """
 
-    def resolve_pages(self, info):
+    def resolve_snippets(self, info, **kwargs):
         # This is highly insecure if you want to keep your snippet data hidden
         # from the public.
-        return model.objects.all()
+        return get_base_queryset_for_model_or_qs(model, info, **kwargs)
 
-    return resolve_pages
+    return resolve_snippets
 
 
 def get_snippet_types():
@@ -26,12 +26,13 @@ def get_snippet_types():
         field_name = (f'snippets_{model._meta.app_label}_{model.__name__}')
 
         # Define a GraphQL data type for that specific page type.
-        yield field_name, graphene.List(object_type, name=field_name)
+        yield field_name, QuerySetList(object_type, name=field_name)
 
         # Add a method to resolve all instances for a certain model.
         yield f'resolve_{field_name}', resolve_snippets_create(model)
 
 
 # Create a query mixin dynamically.
-SnippetQueryMixin = type('SnippetQueryMixin', tuple(),
-                         dict(get_snippet_types()))
+SnippetQueryMixin = type(
+    'SnippetQueryMixin', tuple(), dict(get_snippet_types())
+)
