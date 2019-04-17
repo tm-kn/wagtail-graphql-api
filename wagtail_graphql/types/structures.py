@@ -1,4 +1,6 @@
-from wagtail.search import index
+from django.utils.translation import ugettext_lazy as _
+
+from wagtail.search.index import class_is_indexed
 
 import graphene
 import graphene_django
@@ -8,22 +10,38 @@ from wagtail_graphql.types.scalars import PositiveInt
 
 class QuerySetList(graphene.List):
     def __init__(self, of_type, *args, **kwargs):
+        enable_limit = kwargs.pop('enable_limit', True)
+        enable_offset = kwargs.pop('enable_offset', True)
+        enable_search = kwargs.pop('enable_search', True)
+
         if not issubclass(of_type, graphene_django.DjangoObjectType):
             raise TypeError(
                 f'{of_type} is not a subclass of DjangoObjectType and it '
                 'cannot be used with QuerySetList.'
             )
 
-        if 'limit' not in kwargs:
-            kwargs['limit'] = PositiveInt()
+        if enable_limit is True and 'limit' not in kwargs:
+            kwargs['limit'] = graphene.Argument(
+                PositiveInt,
+                description=_('Limit a number of resulting objects.')
+            )
 
-        if 'order' not in kwargs:
-            kwargs['order'] = PositiveInt()
+        if enable_offset is True and 'offset' not in kwargs:
+            kwargs['offset'] = graphene.Argument(
+                PositiveInt,
+                description=_(
+                    'Number of records skipped from the beginning of the '
+                    'results set.'
+                )
+            )
 
         if (
-            issubclass(of_type._meta.model, index.Indexed)
+            enable_search is True and class_is_indexed(of_type._meta.model)
             and 'search_query' not in kwargs
         ):
-            kwargs['search_query'] = graphene.String()
+            kwargs['search_query'] = graphene.Argument(
+                graphene.String,
+                description=_('Filter the results using Wagtail\'s search.')
+            )
 
         super().__init__(of_type, *args, **kwargs)

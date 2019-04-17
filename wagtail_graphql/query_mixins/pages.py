@@ -25,7 +25,7 @@ def get_page_types():
             f'pages_{page_model._meta.app_label}_'
             f'{page_model.__name__}'
         )
-        print(object_type.mro())
+
         # Define a GraphQL data type for that specific page type.
         yield field_name, QuerySetList(
             object_type,
