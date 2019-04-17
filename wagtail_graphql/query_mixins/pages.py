@@ -1,40 +1,40 @@
+import graphene
+
 from wagtail_graphql.inventory import inventory
-from wagtail_graphql.types import QuerySetList
 from wagtail_graphql.utils import get_base_queryset_for_page_model_or_qs
+from wagtail_graphql.query_mixins.base import get_model_query_attributes_by_app, get_app_query_attributes
 
 
-def resolve_pages_create(model):
-    """
-    Create a function to resolve all pages for a certain page model.
-    """
+def get_page_attributes_by_app():
+    def resolve_pages_create(model):
+        """
+        Create a function to resolve all pages for a certain page model.
+        """
 
-    def resolve_pages(self, info, **kwargs):
-        return get_base_queryset_for_page_model_or_qs(model, info, **kwargs)
+        def resolve_pages(self, info, **kwargs):
+            return get_base_queryset_for_page_model_or_qs(
+                model, info, **kwargs
+            )
 
-    return resolve_pages
+        return resolve_pages
 
-
-def get_page_types():
-    """
-    Generate GraphQL page types dynamically.
-    """
-    for page_model, object_type in inventory.pages.graphql_types:
-        # Define a field name that will be used by the GraphQL
-        # query.
-        field_name = (
-            f'pages_{page_model._meta.app_label}_'
-            f'{page_model.__name__}'
-        )
-
-        # Define a GraphQL data type for that specific page type.
-        yield field_name, QuerySetList(
-            object_type,
-            name=field_name,
-        )
-
-        # Add a method to resolve all instances for a certain page model.
-        yield f'resolve_{field_name}', resolve_pages_create(page_model)
+    return get_model_query_attributes_by_app(
+        inventory.pages.graphql_types,
+        resolve_objects_func=resolve_pages_create
+    )
 
 
-# Create a query mixin dynamically.
-PageQueryMixin = type('PageQueryMixin', tuple(), dict(get_page_types()))
+def get_pages_type():
+    return type(
+        'PagesByAppQueryMixin', (graphene.ObjectType, ),
+        dict(get_app_query_attributes(get_page_attributes_by_app()))
+    )
+
+
+# Create the page query mixin dynamically.
+PageQueryMixin = type(
+    'PageQueryMixin', tuple(), {
+        'pages': graphene.Field(get_pages_type()),
+        'resolve_pages': lambda *args, **kwargs: True
+    }
+)
