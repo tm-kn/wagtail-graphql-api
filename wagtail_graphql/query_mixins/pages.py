@@ -3,8 +3,10 @@ from django.utils.translation import ugettext_lazy as _
 import graphene
 
 from wagtail_graphql.inventory import inventory
+from wagtail_graphql.query_mixins.base import (
+    get_app_query_attributes, get_model_query_attributes_by_app
+)
 from wagtail_graphql.utils import get_base_queryset_for_page_model_or_qs
-from wagtail_graphql.query_mixins.base import get_model_query_attributes_by_app, get_app_query_attributes
 
 
 def get_page_attributes_by_app():
@@ -29,12 +31,12 @@ def get_page_attributes_by_app():
 def get_pages_type():
     attrs = dict(get_app_query_attributes(get_page_attributes_by_app()))
 
-    class PagesByAppQueryMixin:
+    class PagesByAppQueryMixinMeta:
         description = _(
             'Contains Django apps used by the registered GraphQL models.'
         )
 
-    attrs['Meta'] = PagesByAppQueryMixin
+    attrs['Meta'] = PagesByAppQueryMixinMeta
     return type('PagesByAppQueryMixin', (graphene.ObjectType, ), attrs)
 
 
