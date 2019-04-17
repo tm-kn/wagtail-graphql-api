@@ -1,13 +1,16 @@
 import graphene
 
+from django.utils.translation import ugettext_lazy as _
+
 from wagtail_graphql.query_mixins import (ImageQueryMixin, PageQueryMixin,
                                           SnippetQueryMixin)
 
 
-class Query(
+class WagtailQuery(
     graphene.ObjectType, PageQueryMixin, SnippetQueryMixin, ImageQueryMixin
 ):
-    pass
+    class Meta:
+        description = _('Query Wagtail-related data.')
 
 
-schema = graphene.Schema(query=Query)
+schema = graphene.Schema(query=WagtailQuery)

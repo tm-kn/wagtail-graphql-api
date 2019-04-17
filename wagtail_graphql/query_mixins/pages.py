@@ -1,3 +1,5 @@
+from django.utils.translation import ugettext_lazy as _
+
 import graphene
 
 from wagtail_graphql.inventory import inventory
@@ -25,16 +27,26 @@ def get_page_attributes_by_app():
 
 
 def get_pages_type():
-    return type(
-        'PagesByAppQueryMixin', (graphene.ObjectType, ),
-        dict(get_app_query_attributes(get_page_attributes_by_app()))
-    )
+    attrs = dict(get_app_query_attributes(get_page_attributes_by_app()))
+
+    class PagesByAppQueryMixin:
+        description = _(
+            'Contains Django apps used by the registered GraphQL models.'
+        )
+
+    attrs['Meta'] = PagesByAppQueryMixin
+    return type('PagesByAppQueryMixin', (graphene.ObjectType, ), attrs)
+
+
+class PageQueryMixinMeta:
+    description = _('Object that contains all pages-related data.')
 
 
 # Create the page query mixin dynamically.
 PageQueryMixin = type(
     'PageQueryMixin', tuple(), {
         'pages': graphene.Field(get_pages_type()),
-        'resolve_pages': lambda *args, **kwargs: True
+        'resolve_pages': lambda *args, **kwargs: True,
+        'Meta': PageQueryMixinMeta
     }
 )

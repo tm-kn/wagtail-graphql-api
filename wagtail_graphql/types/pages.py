@@ -1,3 +1,5 @@
+from django.utils.translation import ugettext_lazy as _
+
 from wagtail.core.models import Page
 
 import graphene
@@ -36,6 +38,11 @@ class PageInterface(graphene.Interface):
     previous_siblings = QuerySetList(lambda: PageInterface, enable_search=True)
     descendants = QuerySetList(lambda: PageInterface, enable_search=True)
     ancestors = QuerySetList(lambda: PageInterface, enable_search=True)
+
+    class Meta:
+        description = _(
+            'Interface used by every GraphQL Wagtail page object type.'
+        )
 
     def resolve_page_type(self, info):
         return '.'.join(
