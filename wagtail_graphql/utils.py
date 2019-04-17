@@ -3,9 +3,9 @@ import inspect
 from django.db import models
 
 from wagtail.core.models import PageViewRestriction
-from wagtail.search.models import Query
-from wagtail.search.index import class_is_indexed
 from wagtail.search.backends import get_search_backend
+from wagtail.search.index import class_is_indexed
+from wagtail.search.models import Query
 
 from wagtail_graphql import settings
 

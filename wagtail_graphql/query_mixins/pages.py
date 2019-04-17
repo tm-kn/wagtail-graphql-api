@@ -1,6 +1,6 @@
 from wagtail_graphql.inventory import inventory
-from wagtail_graphql.utils import get_base_queryset_for_page_model_or_qs
 from wagtail_graphql.types import QuerySetList
+from wagtail_graphql.utils import get_base_queryset_for_page_model_or_qs
 
 
 def resolve_pages_create(model):
