@@ -10,12 +10,12 @@ def resolve_snippets_create(model):
     Create a function to resolve all pages for a certain snippet model.
     """
 
-    def resolve_pages(self, info, **kwargs):
+    def resolve_snippets(self, info, **kwargs):
         # This is highly insecure if you want to keep your snippet data hidden
         # from the public.
         return get_base_queryset_for_model_or_qs(model, info, **kwargs)
 
-    return resolve_pages
+    return resolve_snippets
 
 
 def get_snippet_types():
