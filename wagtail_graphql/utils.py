@@ -77,6 +77,9 @@ def get_base_queryset_for_page_model_or_qs(page_model_or_qs, info, **kwargs):
     request = info.context
     page_qs = model_to_qs(page_model_or_qs)
 
+    # Only display pages for the current request's site.
+    page_qs = page_qs.in_site(request.site)
+
     page_qs = exclude_invisible_pages(request, page_qs)
     page_qs = page_qs.select_related('content_type')
     return resolve_queryset(page_qs, info, **kwargs)
