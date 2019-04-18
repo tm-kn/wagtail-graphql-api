@@ -10,8 +10,12 @@ class TestGraphQLPages(test.TestCase):
     def test_graphql_pages_query_returns_200_ok(self):
         query = """
         query {
-            pages_wagtailcore_Page {
-                id
+            pages{
+                wagtailcore {
+                    page {
+                        id
+                    }
+                }
             }
         }
         """

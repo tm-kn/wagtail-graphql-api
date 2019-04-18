@@ -1,38 +1,66 @@
+from django.utils.translation import ugettext_lazy as _
+
+import graphene
+
 from wagtail_graphql.inventory import inventory
-from wagtail_graphql.types import QuerySetList
+from wagtail_graphql.query_mixins.base import (
+    get_app_query_attributes, get_model_query_attributes_by_app
+)
 from wagtail_graphql.utils import get_base_queryset_for_model_or_qs
 
 
-def resolve_snippets_create(model):
-    """
-    Create a function to resolve all pages for a certain snippet model.
-    """
+def get_snippets_attributes_by_app():
+    def resolve_snippets_create(model):
+        """
+        Create a function to resolve all instances for a certain
+        snippet model.
+        """
 
-    def resolve_snippets(self, info, **kwargs):
-        # This is highly insecure if you want to keep your snippet data hidden
-        # from the public.
-        return get_base_queryset_for_model_or_qs(model, info, **kwargs)
+        def resolve_snippets(self, info, **kwargs):
+            return get_base_queryset_for_model_or_qs(
+                model, info, **kwargs
+            )
 
-    return resolve_snippets
+        return resolve_snippets
 
-
-def get_snippet_types():
-    """
-    Generate GraphQL page types dynamically.
-    """
-    for model, object_type in inventory.snippets.graphql_types:
-        # Define a field name that will be used by the GraphQL
-        # query.
-        field_name = (f'snippets_{model._meta.app_label}_{model.__name__}')
-
-        # Define a GraphQL data type for that specific page type.
-        yield field_name, QuerySetList(object_type, name=field_name)
-
-        # Add a method to resolve all instances for a certain model.
-        yield f'resolve_{field_name}', resolve_snippets_create(model)
+    return get_model_query_attributes_by_app(
+        inventory.snippets.graphql_types,
+        resolve_objects_func=resolve_snippets_create
+    )
 
 
-# Create a query mixin dynamically.
-SnippetQueryMixin = type(
-    'SnippetQueryMixin', tuple(), dict(get_snippet_types())
-)
+def get_snippets_by_app_type():
+    attrs = dict(get_app_query_attributes(get_snippets_attributes_by_app()))
+
+    if not attrs:
+        return
+
+    class SnippetByAppObjectTypeMeta:
+        description = _(
+            'Contains Django apps used by the registered GraphQL models.'
+        )
+
+    attrs['Meta'] = SnippetByAppObjectTypeMeta
+    return type('SnippetByAppObjectType', (graphene.ObjectType, ), attrs)
+
+
+def create_query_mixin():
+    """Create a query mixin dynamically."""
+    snippets_by_app_type = get_snippets_by_app_type()
+
+    if not snippets_by_app_type:
+        return type('EmptySnippetQueryMixin')
+
+    class SnippetQueryMixinMeta:
+        description = _('Object that contains all snippet-related data.')
+
+    return type(
+        'SnippetQueryMixin', tuple(), {
+            'snippets': graphene.Field(get_snippets_by_app_type()),
+            'resolve_snippets': lambda *args, **kwargs: True,
+            'Meta': SnippetQueryMixinMeta
+        }
+    )
+
+
+SnippetQueryMixin = create_query_mixin()
