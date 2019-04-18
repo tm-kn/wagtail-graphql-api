@@ -17,9 +17,7 @@ def get_snippets_attributes_by_app():
         """
 
         def resolve_snippets(self, info, **kwargs):
-            return get_base_queryset_for_model_or_qs(
-                model, info, **kwargs
-            )
+            return get_base_queryset_for_model_or_qs(model, info, **kwargs)
 
         return resolve_snippets
 
@@ -30,7 +28,11 @@ def get_snippets_attributes_by_app():
 
 
 def get_snippets_by_app_type():
-    attrs = dict(get_app_query_attributes(get_snippets_attributes_by_app()))
+    attrs = dict(
+        get_app_query_attributes(
+            get_snippets_attributes_by_app(), prefix='snippets'
+        )
+    )
 
     if not attrs:
         return
