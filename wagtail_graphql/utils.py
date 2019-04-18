@@ -40,8 +40,12 @@ def resolve_queryset(qs, info, **kwargs):
     limit = kwargs.get('limit')
     offset = int(kwargs.get('offset', 0))
     search_query = kwargs.get('search_query', 0)
+    pk = kwargs.get('id')
 
-    if search_query:
+    if pk is not None:
+        qs = qs.filter(pk=pk)
+
+    if pk is None and search_query:
         # Check if the queryset is searchable using Wagtail search.
         if not class_is_indexed(qs.model):
             raise TypeError("This data type is not searchable by Wagtail.")

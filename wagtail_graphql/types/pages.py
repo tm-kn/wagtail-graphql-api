@@ -86,7 +86,7 @@ class PageInterface(graphene.Interface):
 
     def resolve_previous_siblings(self, info, **kwargs):
         return get_base_queryset_for_page_model_or_qs(
-            self.get_previous_siblings().exclude(pk=self.pk), info, **kwargs
+            self.get_prev_siblings().exclude(pk=self.pk), info, **kwargs
         )
 
     def resolve_parent(self, info, **kwargs):

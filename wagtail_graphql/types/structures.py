@@ -55,4 +55,10 @@ class QuerySetList(graphene.List):
                 description=_('Filter the results using Wagtail\'s search.')
             )
 
+        if 'id' not in kwargs:
+            kwargs['id'] = graphene.Argument(
+                graphene.Int,
+                description=_('Filter by ID'),
+            )
+
         super().__init__(of_type, *args, **kwargs)
