@@ -94,7 +94,10 @@ class PageInterface(graphene.Interface):
         if parent is None:
             return
         qs = get_base_queryset_for_page_model_or_qs(Page, info, **kwargs)
-        return qs.get(pk=parent.pk)
+        try:
+            return qs.get(pk=parent.pk)
+        except Page.DoesNotExist:
+            return
 
     def resolve_seo_title(self, info):
         return self.seo_title or self.title
