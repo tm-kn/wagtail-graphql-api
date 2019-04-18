@@ -12,7 +12,7 @@ class TestGraphQLPages(test.TestCase):
         query {
             pages{
                 wagtailcore {
-                    Page {
+                    page {
                         id
                     }
                 }

@@ -18,6 +18,7 @@ def get_model_query_attributes_by_app(graphql_types, resolve_objects_func):
         # Define a field name that will be used by the GraphQL
         # query.
         field_name = model.__name__
+        field_name = field_name[0].lower() + field_name[1:]
 
         # Define a GraphQL data type for that specific model type.
         attrs[field_name] = QuerySetList(
