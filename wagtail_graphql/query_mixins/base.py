@@ -8,7 +8,7 @@ from wagtail_graphql.types import QuerySetList
 def get_model_query_attributes_by_app(graphql_types, resolve_objects_func):
     """
     Segregate model object types by app and generate attributes for
-    the query mixin.
+    the query object.
     """
     by_app = collections.defaultdict(lambda: {})
 
@@ -37,7 +37,7 @@ def get_app_query_attributes(by_app_attributes):
         field_name = app
         yield field_name, graphene.Field(
             type(
-                f'{field_name.capitalize()}AppQueryMixin',
+                f'{field_name.capitalize()}AppQueryObjectType',
                 (graphene.ObjectType, ), attrs
             )
         )

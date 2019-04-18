@@ -31,6 +31,9 @@ def get_page_attributes_by_app():
 def get_pages_type():
     attrs = dict(get_app_query_attributes(get_page_attributes_by_app()))
 
+    if not attrs:
+        return
+
     class PagesByAppQueryMixinMeta:
         description = _(
             'Contains Django apps used by the registered GraphQL models.'
@@ -40,15 +43,24 @@ def get_pages_type():
     return type('PagesByAppQueryMixin', (graphene.ObjectType, ), attrs)
 
 
-class PageQueryMixinMeta:
-    description = _('Object that contains all pages-related data.')
+def create_query_mixin():
+    """Create the page query mixin dynamically."""
+
+    class PageQueryMixinMeta:
+        description = _('Object that contains all pages-related data.')
+
+    pages_by_app_type = get_pages_type()
+
+    if not pages_by_app_type:
+        return type('EmptyPageQueryMixin')
+
+    return type(
+        'PageQueryMixin', tuple(), {
+            'pages': graphene.Field(pages_by_app_type),
+            'resolve_pages': lambda *args, **kwargs: True,
+            'Meta': PageQueryMixinMeta
+        }
+    )
 
 
-# Create the page query mixin dynamically.
-PageQueryMixin = type(
-    'PageQueryMixin', tuple(), {
-        'pages': graphene.Field(get_pages_type()),
-        'resolve_pages': lambda *args, **kwargs: True,
-        'Meta': PageQueryMixinMeta
-    }
-)
+PageQueryMixin = create_query_mixin()

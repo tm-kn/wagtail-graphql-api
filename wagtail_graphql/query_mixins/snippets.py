@@ -29,27 +29,38 @@ def get_snippets_attributes_by_app():
     )
 
 
-def get_snippets_type():
+def get_snippets_by_app_type():
     attrs = dict(get_app_query_attributes(get_snippets_attributes_by_app()))
 
-    class SnippetByAppQueryMixinMeta:
+    if not attrs:
+        return
+
+    class SnippetByAppObjectTypeMeta:
         description = _(
             'Contains Django apps used by the registered GraphQL models.'
         )
 
-    attrs['Meta'] = SnippetByAppQueryMixinMeta
-    return type('SnippetByAppQueryMixin', (graphene.ObjectType, ), attrs)
+    attrs['Meta'] = SnippetByAppObjectTypeMeta
+    return type('SnippetByAppObjectType', (graphene.ObjectType, ), attrs)
 
 
-class SnippetQueryMixinMeta:
-    description = _('Object that contains all snippet-related data.')
+def create_query_mixin():
+    """Create a query mixin dynamically."""
+    snippets_by_app_type = get_snippets_by_app_type()
+
+    if not snippets_by_app_type:
+        return type('EmptySnippetQueryMixin')
+
+    class SnippetQueryMixinMeta:
+        description = _('Object that contains all snippet-related data.')
+
+    return type(
+        'SnippetQueryMixin', tuple(), {
+            'snippets': graphene.Field(get_snippets_by_app_type()),
+            'resolve_snippets': lambda *args, **kwargs: True,
+            'Meta': SnippetQueryMixinMeta
+        }
+    )
 
 
-# Create a query mixin dynamically.
-SnippetQueryMixin = type(
-    'SnippetQueryMixin', tuple(), {
-        'snippets': graphene.Field(get_snippets_type()),
-        'resolve_snippets': lambda *args, **kwargs: True,
-        'Meta': SnippetQueryMixinMeta
-    }
-)
+SnippetQueryMixin = create_query_mixin()
