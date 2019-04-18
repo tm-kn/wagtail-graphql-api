@@ -66,12 +66,12 @@ class PageInterface(graphene.Interface):
 
     def resolve_descendants(self, info, **kwargs):
         return get_base_queryset_for_page_model_or_qs(
-            self.get_children(), info, **kwargs
+            self.get_descendants(), info, **kwargs
         )
 
     def resolve_ancestors(self, info, **kwargs):
         return get_base_queryset_for_page_model_or_qs(
-            self.get_children(), info, **kwargs
+            self.get_ancestors(), info, **kwargs
         )
 
     def resolve_siblings(self, info, **kwargs):
