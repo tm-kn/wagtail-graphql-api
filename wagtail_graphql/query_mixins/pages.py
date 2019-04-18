@@ -29,7 +29,9 @@ def get_page_attributes_by_app():
 
 
 def get_pages_type():
-    attrs = dict(get_app_query_attributes(get_page_attributes_by_app()))
+    attrs = dict(
+        get_app_query_attributes(get_page_attributes_by_app()), prefix='pages'
+    )
 
     if not attrs:
         return
@@ -40,7 +42,7 @@ def get_pages_type():
         )
 
     attrs['Meta'] = PagesByAppQueryMixinMeta
-    return type('PagesByAppQueryMixin', (graphene.ObjectType, ), attrs)
+    return type('PagesByAppObjectType', (graphene.ObjectType, ), attrs)
 
 
 def create_query_mixin():

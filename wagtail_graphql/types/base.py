@@ -20,6 +20,6 @@ def create_model_type(model, fields, meta_attrs=None):
     meta = type('Meta', tuple(), new_meta_attrs)
 
     return type(
-        f'{model.__name__}ObjectType', (graphene_django.DjangoObjectType, ),
-        {'Meta': meta}
+        f'{model._meta.app_label.capitalize()}{model.__name__}ObjectType',
+        (graphene_django.DjangoObjectType, ), {'Meta': meta}
     )

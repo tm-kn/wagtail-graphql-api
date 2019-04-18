@@ -33,12 +33,13 @@ def get_model_query_attributes_by_app(graphql_types, resolve_objects_func):
     return by_app.items()
 
 
-def get_app_query_attributes(by_app_attributes):
+def get_app_query_attributes(by_app_attributes, prefix=''):
     for app, attrs in by_app_attributes:
         field_name = app
         yield field_name, graphene.Field(
             type(
-                f'{field_name.capitalize()}AppQueryObjectType',
+                f'{field_name.capitalize()}{prefix.capitalize()}'
+                'AppQueryObjectType',
                 (graphene.ObjectType, ), attrs
             )
         )
