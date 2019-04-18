@@ -25,6 +25,7 @@ class PageInterface(graphene.Interface):
     Set basic fields exposed on every single page object.
     """
     id = graphene.Int()
+    url = graphene.String()
     depth = graphene.Int()
     page_type = graphene.String()
     title = graphene.String()
@@ -42,6 +43,12 @@ class PageInterface(graphene.Interface):
     class Meta:
         description = _(
             'Interface used by every GraphQL Wagtail page object type.'
+        )
+
+    def resolve_url(self, info):
+        request = info.context
+        return self.get_url(
+            request=request, current_site=request.site
         )
 
     def resolve_page_type(self, info):
