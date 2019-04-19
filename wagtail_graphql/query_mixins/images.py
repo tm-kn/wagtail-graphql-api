@@ -1,7 +1,6 @@
 from wagtail.images import get_image_model
 
-from wagtail_graphql.types import ImageObjectType
-from wagtail_graphql.types import QuerySetList
+from wagtail_graphql.types import ImageObjectType, QuerySetList
 from wagtail_graphql.utils import get_base_queryset_for_model_or_qs
 
 
