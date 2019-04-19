@@ -87,7 +87,7 @@ class ImageInterface(graphene.Interface):
     def resolve_rendition(self, info, rendition_filter):
         allowed = get_allowed_rendition_filters()
 
-        if rendition_filter not in allowed:
+        if '*' not in allowed and rendition_filter not in allowed:
             msg = (
                 f'Image filter "{rendition_filter}" is not allowed. It needs '
                 f'to be one of: {", ".join(allowed)}.'
