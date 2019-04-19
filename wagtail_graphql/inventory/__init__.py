@@ -1,6 +1,6 @@
+from wagtail_graphql.inventory.models import ModelInventory
 from wagtail_graphql.inventory.pages import PageInventory
 from wagtail_graphql.inventory.snippets import SnippetInventory
-from wagtail_graphql.inventory.models import ModelInventory
 
 
 class Inventory:
