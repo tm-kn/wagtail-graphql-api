@@ -56,7 +56,7 @@ def check_settings(app_configs, **kwargs):
                 'not {}.'.format(
                     type(settings.WAGTAIL_GRAPHQL_ENABLE_DOCUMENTS).__name__
                 ),
-                id='wagtail_graphql.W001',
+                id='wagtail_graphql.W002',
             )
         )
 
