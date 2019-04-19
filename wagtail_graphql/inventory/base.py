@@ -3,7 +3,7 @@ import collections
 from wagtail_graphql.models import GraphQLField
 
 
-class ModelInventory:
+class BaseModelInventory:
     def __init__(self):
         self._models = set()
         self._model_fields = collections.OrderedDict()
@@ -72,3 +72,6 @@ class ModelInventory:
                 model, self.get_model_fields_for(model)
             )
             self._graphql_types[model] = graphql_type
+
+    def get_graphql_type_for_model(self, model):
+        return self._graphql_types[model]

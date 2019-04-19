@@ -1,11 +1,11 @@
 from wagtail.core.models import Page, get_page_models
 
-from wagtail_graphql.inventory.base import ModelInventory
+from wagtail_graphql.inventory.base import BaseModelInventory
 from wagtail_graphql.models import GraphQLEnabledModel
 from wagtail_graphql.types import create_page_type
 
 
-class PageInventory(ModelInventory):
+class PageInventory(BaseModelInventory):
     """
     Store metadata about Wagtail page models exposed to GraphQL.
     """

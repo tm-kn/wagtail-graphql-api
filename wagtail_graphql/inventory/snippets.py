@@ -1,11 +1,11 @@
 from wagtail.snippets.models import get_snippet_models
 
-from wagtail_graphql.inventory.base import ModelInventory
+from wagtail_graphql.inventory.base import BaseModelInventory
 from wagtail_graphql.models import GraphQLEnabledModel
 from wagtail_graphql.types.snippets import create_snippet_type
 
 
-class SnippetInventory(ModelInventory):
+class SnippetInventory(BaseModelInventory):
     def resolve_models(self):
         for model in get_snippet_models():
             if not issubclass(model, GraphQLEnabledModel):
