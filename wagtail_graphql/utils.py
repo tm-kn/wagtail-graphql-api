@@ -2,12 +2,33 @@ import inspect
 
 from django.db import models
 
-from wagtail.core.models import PageViewRestriction
+from wagtail.core.models import (
+    Collection, CollectionViewRestriction, PageViewRestriction
+)
 from wagtail.search.backends import get_search_backend
 from wagtail.search.index import class_is_indexed
 from wagtail.search.models import Query
 
 from wagtail_graphql import settings
+
+
+def exclude_restricted_collection_members(request, collection_members):
+    restricted_collections = [
+        restriction.collection for restriction in
+        CollectionViewRestriction.objects.all().select_related('collection')
+        if not restriction.accept_request(request)
+    ]
+
+    collections = Collection.objects.all()
+
+    for restricted_collection in restricted_collections:
+        collections = collections.not_descendant_of(
+            restricted_collection, inclusive=True
+        )
+
+    return collection_members.filter(
+        collection_id__in=collections.values_list('pk', flat=True)
+    )
 
 
 def exclude_invisible_pages(request, pages):
