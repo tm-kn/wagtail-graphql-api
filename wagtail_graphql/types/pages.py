@@ -24,7 +24,7 @@ class PageInterface(graphene.Interface):
     """
     Set basic fields exposed on every single page object.
     """
-    id = graphene.Int()
+    id = graphene.ID()
     url = graphene.String()
     depth = graphene.Int()
     page_type = graphene.String()

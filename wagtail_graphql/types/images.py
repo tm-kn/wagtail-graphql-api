@@ -29,7 +29,7 @@ def get_default_rendition_filter():
 
 
 class RenditionInterface(graphene.Interface):
-    id = graphene.Int()
+    id = graphene.ID()
     alt = graphene.String()
     url = graphene.String(
         absolute=graphene.Argument(
@@ -62,7 +62,7 @@ class RenditionObjectType(graphene_django.DjangoObjectType):
 
 
 class ImageInterface(graphene.Interface):
-    id = graphene.Int()
+    id = graphene.ID()
     title = graphene.String()
     width = graphene.Int()
     height = graphene.Int()
