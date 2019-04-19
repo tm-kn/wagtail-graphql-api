@@ -17,3 +17,7 @@ WAGTAIL_GRAPHQL_ADD_SEARCH_HIT = getattr(
 WAGTAIL_GRAPHQL_ENABLE_IMAGES = getattr(
     django.conf.settings, 'WAGTAIL_GRAPHQL_ENABLE_IMAGES', True
 )
+
+WAGTAIL_GRAPHQL_ENABLE_DOCUMENTS = getattr(
+    django.conf.settings, 'WAGTAIL_GRAPHQL_ENABLE_DOCUMENTS', True
+)

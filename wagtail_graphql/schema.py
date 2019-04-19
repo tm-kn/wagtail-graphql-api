@@ -4,7 +4,8 @@ import graphene
 
 from wagtail_graphql import settings
 from wagtail_graphql.query_mixins import (
-    CurrentSiteMixin, ImageQueryMixin, PageQueryMixin, SnippetQueryMixin
+    CurrentSiteMixin, DocumentQueryMixin, ImageQueryMixin, PageQueryMixin,
+    SnippetQueryMixin
 )
 
 # Allow enabling the images endpoint
@@ -14,14 +15,19 @@ else:
     image_query_mixin_cls = type('DisabledImageQueryMixin')
 
 
+# Allow enabling the documents endpoint
+if settings.WAGTAIL_GRAPHQL_ENABLE_DOCUMENTS is True:
+    documents_query_mixin_cls = DocumentQueryMixin
+else:
+    documents_query_mixin_cls = type('DisabledDocumentQueryMixin')
+
+
 class WagtailQuery(
     graphene.ObjectType, PageQueryMixin, SnippetQueryMixin,
-    image_query_mixin_cls, CurrentSiteMixin
+    image_query_mixin_cls, CurrentSiteMixin, documents_query_mixin_cls
 ):
     class Meta:
         description = _('Query Wagtail-related data.')
 
 
-schema = graphene.Schema(
-    query=WagtailQuery
-)
+schema = graphene.Schema(query=WagtailQuery)

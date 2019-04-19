@@ -49,6 +49,17 @@ def check_settings(app_configs, **kwargs):
             )
         )
 
+    if not isinstance(settings.WAGTAIL_GRAPHQL_ENABLE_DOCUMENTS, bool):
+        errors.append(
+            checks.Warning(
+                'WAGTAIL_GRAPHQL_ENABLE_DOCUMENTS setting must be a boolean, '
+                'not {}.'.format(
+                    type(settings.WAGTAIL_GRAPHQL_ENABLE_DOCUMENTS).__name__
+                ),
+                id='wagtail_graphql.W002',
+            )
+        )
+
     return errors
 
 

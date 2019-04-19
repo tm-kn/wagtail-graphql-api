@@ -1,4 +1,5 @@
 import inspect
+import urllib
 
 from django.db import models
 
@@ -118,3 +119,10 @@ def get_base_queryset_for_page_model_or_qs(page_model_or_qs, info, **kwargs):
     page_qs = exclude_invisible_pages(request, page_qs)
     page_qs = page_qs.select_related('content_type')
     return resolve_queryset(page_qs, info, **kwargs)
+
+
+def resolve_absolute_url(url, request, absolute=True):
+    if not absolute or urllib.parse.urlparse(url).netloc:
+        return url
+
+    return request.build_absolute_uri(url)
