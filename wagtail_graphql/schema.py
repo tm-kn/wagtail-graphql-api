@@ -22,4 +22,6 @@ class WagtailQuery(
         description = _('Query Wagtail-related data.')
 
 
-schema = graphene.Schema(query=WagtailQuery)
+schema = graphene.Schema(
+    query=WagtailQuery
+)

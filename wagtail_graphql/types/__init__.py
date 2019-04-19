@@ -1,4 +1,5 @@
 from wagtail_graphql.types.base import create_model_type
+from wagtail_graphql.types.collection import CollectionObjectType
 from wagtail_graphql.types.images import ImageInterface, ImageObjectType
 from wagtail_graphql.types.pages import PageInterface, create_page_type
 from wagtail_graphql.types.scalars import PositiveInt
@@ -8,6 +9,7 @@ from wagtail_graphql.types.streamfields import StreamField
 from wagtail_graphql.types.structures import QuerySetList
 
 __all__ = [
+    'CollectionObjectType',
     'ImageInterface',
     'ImageObjectType',
     'PageInterface',
