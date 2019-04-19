@@ -7,9 +7,11 @@ from wagtail_graphql.types.site import SiteObjectType
 from wagtail_graphql.types.snippets import create_snippet_type
 from wagtail_graphql.types.streamfields import StreamField
 from wagtail_graphql.types.structures import QuerySetList
+from wagtail_graphql.types.documents import DocumentObjectType
 
 __all__ = [
     'CollectionObjectType',
+    'DocumentObjectType',
     'ImageInterface',
     'ImageObjectType',
     'PageInterface',

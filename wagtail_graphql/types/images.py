@@ -1,6 +1,5 @@
 import itertools
 import logging
-import urllib
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -11,6 +10,7 @@ import graphene
 import graphene_django
 
 from wagtail_graphql import settings
+from wagtail_graphql.utils import resolve_absolute_url
 
 logger = logging.getLogger(__name__)
 
@@ -48,10 +48,8 @@ class RenditionInterface(graphene.Interface):
         return self.pk
 
     def resolve_url(self, info, absolute):
-        if not absolute or urllib.parse.urlparse(self.url).netloc:
-            return self.url
-
-        return info.context.build_absolute_uri(self.url)
+        request = info.context
+        return resolve_absolute_url(self.url, request, absolute=absolute)
 
 
 class RenditionObjectType(graphene_django.DjangoObjectType):
