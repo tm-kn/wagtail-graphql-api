@@ -40,6 +40,15 @@ def check_settings(app_configs, **kwargs):
             )
         )
 
+    if not isinstance(settings.WAGTAIL_GRAPHQL_ENABLE_IMAGES, bool):
+        errors.append(
+            checks.Warning(
+                'WAGTAIL_GRAPHQL_ENABLE_IMAGES setting must be a boolean, not '
+                f'{type(settings.WAGTAIL_GRAPHQL_ENABLE_IMAGES).__name__}.',
+                id='wagtail_graphql.W001',
+            )
+        )
+
     return errors
 
 
