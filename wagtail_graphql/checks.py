@@ -24,15 +24,28 @@ def check_settings(app_configs, **kwargs):
         )
 
     try:
-        for rendition_filter in allowed_filters:
+        for rendition_filter in filter(lambda x: x != '*', allowed_filters):
             Filter(spec=rendition_filter).operations
     except InvalidFilterSpecError:
         errors.append(
             checks.Error(
                 'WAGTAIL_GRAPHQL_ALLOWED_RENDITION_FILTERS setting must '
                 'be a collection of valid Wagtail image filters.',
-                hint='http://docs.wagtail.io/en/stable/topics/images.html',
+                hint=(
+                    f'"{rendition_filter}" is an invalid filter. See for more '
+                    'information: '
+                    'http://docs.wagtail.io/en/stable/topics/images.html',
+                ),
                 id='wagtail_graphql.E002',
+            )
+        )
+
+    if not isinstance(settings.WAGTAIL_GRAPHQL_ENABLE_IMAGES, bool):
+        errors.append(
+            checks.Warning(
+                'WAGTAIL_GRAPHQL_ENABLE_IMAGES setting must be a boolean, not '
+                f'{type(settings.WAGTAIL_GRAPHQL_ENABLE_IMAGES).__name__}.',
+                id='wagtail_graphql.W001',
             )
         )
 
