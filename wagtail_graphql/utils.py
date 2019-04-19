@@ -14,6 +14,14 @@ from wagtail_graphql import settings
 
 
 def exclude_restricted_collection_members(request, collection_members):
+    """
+    Filter out a list of Wagtail collection members (e.g. images or
+    documents) that have collection privacy set accordingly.
+
+    :param request: Request used to authorize access to pages.
+    :type request: django.http.request.HttpRequest
+    :param pages: QuerySet containing pages to filter.
+    """
     restricted_collections = [
         restriction.collection for restriction in
         CollectionViewRestriction.objects.all().select_related('collection')
@@ -34,8 +42,12 @@ def exclude_restricted_collection_members(request, collection_members):
 
 def exclude_invisible_pages(request, pages):
     """
-    Excludes from the QuerySet pages that are invisible
-    for a current user.
+    Exclude from the QuerySet of pages that are invisible
+    for the current user.
+
+    :param request: Request used to authorize access to pages.
+    :type request: django.http.request.HttpRequest
+    :param pages: QuerySet containing pages to filter.
     """
 
     # Make sure pages are live
@@ -55,14 +67,25 @@ def exclude_invisible_pages(request, pages):
     return pages
 
 
-def resolve_queryset(qs, info, **kwargs):
+def resolve_queryset(
+    qs, info, limit=None, offset=None, search_query=None, pk=None, **kwargs
+):
     """
-    Add limit, offset and search capabilities to the query.
+    Add limit, offset and search capabilities to the query. This contains
+    argument names used by
+    :class:`~wagtail_graphql.types.structures.QuerySetList`.
+
+    :param qs: Query set to be modified.
+    :param info: Graphene's info object.
+    :param limit: Limit number of objects in the QuerySet.
+    :type limit: int
+    :param offset: Omit a number of objects from the beggining of the query set.
+    :type offset: int
+    :param search_query: Using wagtail search exclude objects that do not match
+                         the search query.
+    :type search_query: str
     """
-    limit = kwargs.get('limit')
-    offset = int(kwargs.get('offset', 0))
-    search_query = kwargs.get('search_query', 0)
-    pk = kwargs.get('id')
+    offset = int(offset or 0)
 
     if pk is not None:
         qs = qs.filter(pk=pk)
@@ -86,6 +109,11 @@ def resolve_queryset(qs, info, **kwargs):
 
 
 def model_to_qs(model_or_qs):
+    """
+    Convert model to a query set if it is not already a query set.
+
+    :param model_or_qs: Model or query set to be cast as a query set.
+    """
     if inspect.isclass(model_or_qs) \
             and issubclass(model_or_qs, models.Model):
         qs = model_or_qs.objects.all()
@@ -95,11 +123,28 @@ def model_to_qs(model_or_qs):
 
 
 def get_base_queryset_for_model_or_qs(model_or_qs, info, **kwargs):
+    """
+    Process a query set before displaying it in the GraphQL query result.
+
+    :param model_or_qs: Model or a query set to be transformer.
+    :param info: Graphene's info object.
+    :param kwargs: Any additional keyword arguments passed from the GraphQL
+                   query.
+    """
     qs = model_to_qs(model_or_qs)
     return resolve_queryset(qs, info, **kwargs)
 
 
 def get_base_queryset_for_page_model_or_qs(page_model_or_qs, info, **kwargs):
+    """
+    The same as :ref:`get_base_queryset_for_model_or_qs`, except it adds
+    Wagtail page-specific filters and privacy checks.
+
+    :param model_or_qs: Model or a query set to be transformer.
+    :param info: Graphene's info object.
+    :param kwargs: Any additional keyword arguments passed from the GraphQL
+                   query.
+    """
     request = info.context
     page_qs = model_to_qs(page_model_or_qs)
 
@@ -122,6 +167,16 @@ def get_base_queryset_for_page_model_or_qs(page_model_or_qs, info, **kwargs):
 
 
 def resolve_absolute_url(url, request, absolute=True):
+    """
+    Transform URL to an absolute one if it already is not absolute.
+
+    :param url: The URL to be resolved, relative or absolute.
+    :type url: str
+    :param request: Request used to get the domain.
+    :type request: django.http.request.HttpRequest
+    :param absolute: Set to ``True`` if value should be returned as absolute.
+    :type absolute: bool
+    """
     if not absolute or urllib.parse.urlparse(url).netloc:
         return url
 
