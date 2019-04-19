@@ -5,12 +5,17 @@ import graphene
 from wagtail_graphql.types import QuerySetList
 
 
-def get_model_query_attributes_by_app(graphql_types, resolve_objects_func):
+def get_model_query_attributes_by_app(
+    graphql_types, resolve_objects_func, field_arguments=None
+):
     """
     Segregate model object types by app and generate attributes for
     the query object.
     """
     by_app = collections.defaultdict(lambda: {})
+
+    if field_arguments is None:
+        field_arguments = {}
 
     for model, object_type in graphql_types:
         attrs = {}
@@ -24,6 +29,7 @@ def get_model_query_attributes_by_app(graphql_types, resolve_objects_func):
         attrs[field_name] = QuerySetList(
             object_type,
             name=field_name,
+            **field_arguments,
         )
 
         # Add a method to resolve all instances for a certain model type.
@@ -39,8 +45,7 @@ def get_app_query_attributes(by_app_attributes, prefix=''):
         yield field_name, graphene.Field(
             type(
                 f'{field_name.capitalize()}{prefix.capitalize()}'
-                'AppQueryObjectType',
-                (graphene.ObjectType, ), attrs
+                'AppQueryObjectType', (graphene.ObjectType, ), attrs
             )
         )
         yield f'resolve_{field_name}', lambda *args, **kwargs: True

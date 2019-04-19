@@ -81,6 +81,11 @@ def get_base_queryset_for_page_model_or_qs(page_model_or_qs, info, **kwargs):
     request = info.context
     page_qs = model_to_qs(page_model_or_qs)
 
+    # Add filtering by depth
+    depth = kwargs.get('depth')
+    if depth is not None:
+        page_qs = page_qs.filter(depth=depth)
+
     # Only display pages for the current request's site.
     page_qs = page_qs.in_site(request.site)
 
