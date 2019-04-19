@@ -24,3 +24,21 @@ class TestGraphQLPages(test.TestCase):
         })
         response = GraphQLView.as_view()(request)
         self.assertEqual(response.status_code, 200)
+
+    def test_graphql_home_page_returns_200_ok(self):
+        query = """
+        query {
+            pages{
+                home {
+                    homePage {
+                        id
+                    }
+                }
+            }
+        }
+        """
+        request = self.request_factory.post('/', {
+            'query': query
+        })
+        response = GraphQLView.as_view()(request)
+        self.assertEqual(response.status_code, 200)
