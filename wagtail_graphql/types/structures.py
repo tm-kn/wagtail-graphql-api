@@ -57,7 +57,7 @@ class QuerySetList(graphene.List):
 
         if 'id' not in kwargs:
             kwargs['id'] = graphene.Argument(
-                graphene.Int,
+                graphene.ID,
                 description=_('Filter by ID'),
             )
 
