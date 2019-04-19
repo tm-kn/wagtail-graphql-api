@@ -1,9 +1,9 @@
-import graphene
-import graphene_django
-
 from django.utils.translation import ugettext_lazy as _
 
 from wagtail.documents.models import get_document_model
+
+import graphene
+import graphene_django
 
 from wagtail_graphql.utils import resolve_absolute_url
 
