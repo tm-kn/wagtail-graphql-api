@@ -1,7 +1,7 @@
 from wagtail.core.models import Page, get_page_models
 
 from wagtail_graphql.inventory.base import ModelInventory
-from wagtail_graphql.models import GraphQLEnabledPage
+from wagtail_graphql.models import GraphQLEnabledModel
 from wagtail_graphql.types import create_page_type
 
 
@@ -18,7 +18,7 @@ class PageInventory(ModelInventory):
         for model in get_page_models():
             assert model not in self._models
             # Check if the page model is GraphQL enabled
-            if issubclass(model, GraphQLEnabledPage) or model is Page:
+            if issubclass(model, GraphQLEnabledModel) or model is Page:
                 self._models.add(model)
                 self.resolve_model_fields_for(model)
 

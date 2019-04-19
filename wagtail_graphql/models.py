@@ -2,10 +2,6 @@ class GraphQLEnabledModel:
     pass
 
 
-class GraphQLEnabledPage(GraphQLEnabledModel):
-    pass
-
-
 class GraphQLField:
     def __init__(self, name):
         if not isinstance(name, str):

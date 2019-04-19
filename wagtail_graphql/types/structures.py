@@ -6,8 +6,17 @@ from wagtail.search.index import class_is_indexed
 
 import graphene
 import graphene_django
+from taggit.managers import _TaggableManager
 
 from wagtail_graphql.types.scalars import PositiveInt
+
+
+class TagList(graphene.JSONString):
+    @staticmethod
+    def serialize(value):
+        if isinstance(value, _TaggableManager):
+            return list(value.values_list('name', flat=True))
+        raise ValueError('Cannot convert tags object')
 
 
 class QuerySetList(graphene.List):
