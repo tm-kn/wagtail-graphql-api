@@ -86,6 +86,11 @@ def get_base_queryset_for_page_model_or_qs(page_model_or_qs, info, **kwargs):
     if depth is not None:
         page_qs = page_qs.filter(depth=depth)
 
+    # Add filtering by "show in menus"
+    depth = kwargs.get('show_in_menus')
+    if depth is not None:
+        page_qs = page_qs.filter(show_in_menus=True)
+
     # Only display pages for the current request's site.
     page_qs = page_qs.in_site(request.site)
 

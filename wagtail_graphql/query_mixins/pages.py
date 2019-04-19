@@ -29,7 +29,8 @@ def get_page_attributes_by_app():
         field_arguments={
             'depth': graphene.Argument(
                 PositiveInt, description=_('Depth in the page tree.')
-            )
+            ),
+            'show_in_menus': graphene.Argument(graphene.Boolean),
         }
     )
 
