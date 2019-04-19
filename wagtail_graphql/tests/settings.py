@@ -48,8 +48,9 @@ INSTALLED_APPS = [
     'wagtail.admin',
     'wagtail.core',
     'taggit',
-
+    'graphene_django',
     'wagtail_graphql',
+    'wagtail_graphql.tests.home',
 ]
 
 TEMPLATES = [

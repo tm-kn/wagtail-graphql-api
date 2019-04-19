@@ -1,4 +1,5 @@
 from django.urls import include, path
+from django.views.decorators.csrf import csrf_exempt
 
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.core import urls as wagtail_urls
@@ -11,6 +12,10 @@ urlpatterns = [
     path('admin/', include(wagtailadmin_urls)),
     path('documents/', include(wagtaildocs_urls)),
     path('images/', include(wagtailimages_urls)),
-    path('graphql/', GraphQLView.as_view(), name='graphql'),
+    path(
+        'graphql/',
+        csrf_exempt(GraphQLView.as_view(graphiql=True, pretty=True)),
+        name='graphql'
+    ),
     path('', include(wagtail_urls)),
 ]
