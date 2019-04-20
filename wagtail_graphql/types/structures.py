@@ -33,6 +33,7 @@ class QuerySetList(graphene.List):
     * ``limit``
     * ``offset``
     * ``search_query``
+    * ``order``
 
     :param enable_limit: Enable limit argument.
     :type enable_limit: bool
@@ -40,12 +41,15 @@ class QuerySetList(graphene.List):
     :type enable_offset: bool
     :param enable_search: Enable search query argument.
     :type enable_search: bool
+    :param enable_order: Enable ordering via query argument.
+    :type enable_order: bool
     """
 
     def __init__(self, of_type, *args, **kwargs):
         enable_limit = kwargs.pop('enable_limit', True)
         enable_offset = kwargs.pop('enable_offset', True)
         enable_search = kwargs.pop('enable_search', True)
+        enable_order = kwargs.pop('enable_order', True)
 
         # Check if the type is a Django model type. Do not perform the
         # check if value is lazy.
@@ -71,6 +75,13 @@ class QuerySetList(graphene.List):
                     'Number of records skipped from the beginning of the '
                     'results set.'
                 )
+            )
+
+        # Enable ordering of the queryset
+        if enable_order is True and 'order' not in kwargs:
+            kwargs['order'] = graphene.Argument(
+                graphene.String,
+                description=_('Use Django ordering format.')
             )
 
         # If type is provided as a lazy value (e.g. using lambda), then
