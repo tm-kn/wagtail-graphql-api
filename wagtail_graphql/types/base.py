@@ -4,6 +4,15 @@ import graphene_django
 
 
 def create_model_type(model, fields, meta_attrs=None):
+    """
+    Create a generic GraphQL type for a Django model.
+
+    :param model: Django model.
+    :param fields: A list of :class:`wagtail_graphql.models.GraphQLField`
+                   instances to be used on the type.
+    :param meta_attrs: Additional meta attributes to be passed to the new
+                       GraphQL object type.
+    """
     attrs = {}
 
     new_meta_attrs = {

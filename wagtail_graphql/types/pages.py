@@ -11,7 +11,7 @@ from wagtail_graphql.utils import get_base_queryset_for_page_model_or_qs
 
 def create_page_type(model, fields):
     """
-    Generate a DjangoObjectType for a Wagtail page.
+    Generate a DjangoObjectType subclass for a Wagtail page.
     """
     return create_model_type(
         model, fields, meta_attrs={
@@ -22,8 +22,9 @@ def create_page_type(model, fields):
 
 class PageInterface(graphene.Interface):
     """
-    Set basic fields exposed on every single page object.
+    Set basic fields exposed on every page object.
     """
+
     id = graphene.ID()
     url = graphene.String()
     depth = graphene.Int()
@@ -46,12 +47,16 @@ class PageInterface(graphene.Interface):
         )
 
     def resolve_url(self, info):
+        """
+        Resolve a path to a page.
+        """
         request = info.context
-        return self.get_url(
-            request=request, current_site=request.site
-        )
+        return self.get_url(request=request, current_site=request.site)
 
     def resolve_page_type(self, info):
+        """
+        Resolve a page type in a form of ``app.ModelName``.
+        """
         return '.'.join(
             [
                 self.content_type.app_label,
@@ -100,4 +105,7 @@ class PageInterface(graphene.Interface):
             return
 
     def resolve_seo_title(self, info):
+        """
+        Get page's SEO title. Fallback to a normal page's title if absent.
+        """
         return self.seo_title or self.title

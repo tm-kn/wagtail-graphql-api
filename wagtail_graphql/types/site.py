@@ -5,6 +5,10 @@ import graphene_django
 
 
 class SiteObjectType(graphene_django.DjangoObjectType):
+    """
+    GraphQL representation of the Wagtail's Site model.
+    """
+
     name = graphene.String()
 
     class Meta:
@@ -12,4 +16,7 @@ class SiteObjectType(graphene_django.DjangoObjectType):
         only_fields = ('id', 'name')
 
     def resolve_name(self, info):
+        """
+        Map ``Site.site_name`` to :attr:`name` for convenience.
+        """
         return self.site_name

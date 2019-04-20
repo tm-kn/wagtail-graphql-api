@@ -11,6 +11,10 @@ from wagtail_graphql.utils import (
 
 
 class CollectionObjectType(graphene_django.DjangoObjectType):
+    """
+    GraphQL representation of the Wagtail's Collection model.
+    """
+
     images = QuerySetList(ImageObjectType)
 
     class Meta:
@@ -18,6 +22,10 @@ class CollectionObjectType(graphene_django.DjangoObjectType):
         only_fields = ('id', 'name')
 
     def resolve_images(self, info, **kwargs):
+        """
+        Resolve images belonging to a particular collection if privacy of the
+        collection allows.
+        """
         request = info.context
         qs = exclude_restricted_collection_members(
             request,
