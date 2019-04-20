@@ -9,10 +9,20 @@ from wagtail_graphql.types.base import create_model_type
 
 
 class ModelInventory(BaseModelInventory):
+    """
+    Inventory of models that are not pages nor snippets.
+    """
+
     def create_model_graphql_type(self, model, fields):
         return create_model_type(model, fields)
 
     def resolve_models(self):
+        """
+        Resolve registered Django models omitting pages and snippets. The
+        models need to subclass
+        :class:`wagtail_graphql.models.GraphQLEnabledModel`.
+        """
+
         snippets = get_snippet_models()
 
         for model in GraphQLEnabledModel.__subclasses__():

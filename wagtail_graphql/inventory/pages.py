@@ -13,7 +13,8 @@ class PageInventory(BaseModelInventory):
     def resolve_models(self):
         """
         Find all Wagtail page models eligible to be in the GraphQL
-        endpoint.
+        endpoint. They need to subclass
+        :class:`wagtail_graphql.models.GraphQLEnabledModel`.
         """
         for model in get_page_models():
             assert model not in self._models
@@ -23,4 +24,7 @@ class PageInventory(BaseModelInventory):
                 self.resolve_model_fields_for(model)
 
     def create_model_graphql_type(self, model, fields):
+        """
+        Create a GraphQL type for the specified page model.
+        """
         return create_page_type(model, fields)
