@@ -12,6 +12,10 @@ from wagtail_graphql.types.scalars import PositiveInt
 
 
 class TagList(graphene.JSONString):
+    """
+    A tag list from the TaggableManager.
+    """
+
     @staticmethod
     def serialize(value):
         if isinstance(value, _TaggableManager):
@@ -20,6 +24,24 @@ class TagList(graphene.JSONString):
 
 
 class QuerySetList(graphene.List):
+    """
+    List type with arguments used by Django's query sets.
+
+    This list setts the following arguments on itself:
+
+    * ``id``
+    * ``limit``
+    * ``offset``
+    * ``search_query``
+
+    :param enable_limit: Enable limit argument.
+    :type enable_limit: bool
+    :param enable_offset: Enable offset argument.
+    :type enable_offset: bool
+    :param enable_search: Enable search query argument.
+    :type enable_search: bool
+    """
+
     def __init__(self, of_type, *args, **kwargs):
         enable_limit = kwargs.pop('enable_limit', True)
         enable_offset = kwargs.pop('enable_offset', True)

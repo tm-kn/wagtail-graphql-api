@@ -9,6 +9,9 @@ from wagtail_graphql.utils import resolve_absolute_url
 
 
 class DocumentObjectType(graphene_django.DjangoObjectType):
+    """
+    Represent the Wagtail's Document model as a GraphQL type.
+    """
     url = graphene.String(
         absolute=graphene.Argument(
             graphene.Boolean,

@@ -4,6 +4,10 @@ from wagtail_graphql.models import GraphQLField
 
 
 class BaseModelInventory:
+    """
+    Base class for an inventory of Django models.
+    """
+
     def __init__(self):
         self._models = set()
         self._model_fields = collections.OrderedDict()
@@ -12,17 +16,29 @@ class BaseModelInventory:
         self.resolve_graphql_types()
 
     def create_model_graphql_type(self, model, fields):
+        """
+        Create a GraphQL object type for a model and fields specified.
+        """
         raise NotImplementedError
 
     def resolve_models(self):
+        """
+        Discover the models that need registering with the inventory.
+        """
         raise NotImplementedError
 
     @property
     def models(self):
+        """
+        List of models registered with this inventory.
+        """
         return (model for model in self._models)
 
     @property
     def graphql_types(self):
+        """
+        List of GraphQL registered with this inventory.
+        """
         return self._graphql_types.items()
 
     def get_model_fields_for(self, model):
@@ -33,6 +49,9 @@ class BaseModelInventory:
         return tuple(self._model_fields[model])
 
     def resolve_model_fields_for(self, model):
+        """
+        Discover GraphQL fields definition for a particular model.
+        """
         assert model not in self._model_fields, (
             f"{model}'s fields have been already registered."
         )
@@ -72,6 +91,3 @@ class BaseModelInventory:
                 model, self.get_model_fields_for(model)
             )
             self._graphql_types[model] = graphql_type
-
-    def get_graphql_type_for_model(self, model):
-        return self._graphql_types[model]

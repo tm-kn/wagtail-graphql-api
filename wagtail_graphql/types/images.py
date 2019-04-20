@@ -29,6 +29,9 @@ def get_default_rendition_filter():
 
 
 class RenditionInterface(graphene.Interface):
+    """
+    GraphQL interface for rendition object types.
+    """
     id = graphene.ID()
     alt = graphene.String()
     url = graphene.String(
@@ -48,11 +51,18 @@ class RenditionInterface(graphene.Interface):
         return self.pk
 
     def resolve_url(self, info, absolute):
+        """
+        Resolve to an absolute URL if necessary.
+        """
         request = info.context
         return resolve_absolute_url(self.url, request, absolute=absolute)
 
 
 class RenditionObjectType(graphene_django.DjangoObjectType):
+    """
+    GraphQL representation of the image rendition model.
+    """
+
     class Meta:
         model = get_image_model().get_rendition_model()
         interfaces = (RenditionInterface, )
@@ -60,6 +70,10 @@ class RenditionObjectType(graphene_django.DjangoObjectType):
 
 
 class ImageInterface(graphene.Interface):
+    """
+    GraphQL interface for image object types.
+    """
+
     id = graphene.ID()
     title = graphene.String()
     width = graphene.Int()
@@ -83,6 +97,23 @@ class ImageInterface(graphene.Interface):
         return self.pk
 
     def resolve_rendition(self, info, rendition_filter):
+        """
+        Resolve an image rendition with a specified Wagtail's image rendition
+        filter.
+
+        Example:
+
+        .. code::
+
+           query {
+               images {
+                   rendition(filter: "fill-200x200") {
+                       url
+                   }
+               }
+           }
+
+        """
         allowed = get_allowed_rendition_filters()
 
         if '*' not in allowed and rendition_filter not in allowed:
@@ -99,6 +130,10 @@ class ImageInterface(graphene.Interface):
 
 
 class ImageObjectType(graphene_django.DjangoObjectType):
+    """
+    GraphQL representation of Wagtail's image model.
+    """
+
     class Meta:
         model = get_image_model()
         only_fields = ('id', )

@@ -14,7 +14,6 @@ if settings.WAGTAIL_GRAPHQL_ENABLE_IMAGES is True:
 else:
     image_query_mixin_cls = type('DisabledImageQueryMixin')
 
-
 # Allow enabling the documents endpoint
 if settings.WAGTAIL_GRAPHQL_ENABLE_DOCUMENTS is True:
     documents_query_mixin_cls = DocumentQueryMixin
@@ -26,6 +25,10 @@ class WagtailQuery(
     graphene.ObjectType, PageQueryMixin, SnippetQueryMixin,
     image_query_mixin_cls, CurrentSiteMixin, documents_query_mixin_cls
 ):
+    """
+    Main GraphQL query used directly by the endpoint.
+    """
+
     class Meta:
         description = _('Query Wagtail-related data.')
 
