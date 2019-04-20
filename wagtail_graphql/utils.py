@@ -137,8 +137,8 @@ def get_base_queryset_for_model_or_qs(model_or_qs, info, **kwargs):
 
 def get_base_queryset_for_page_model_or_qs(page_model_or_qs, info, **kwargs):
     """
-    The same as :ref:`get_base_queryset_for_model_or_qs`, except it adds
-    Wagtail page-specific filters and privacy checks.
+    The same as :func:`get_base_queryset_for_model_or_qs`,
+    except it adds Wagtail page-specific filters and privacy checks.
 
     :param model_or_qs: Model or a query set to be transformer.
     :param info: Graphene's info object.
