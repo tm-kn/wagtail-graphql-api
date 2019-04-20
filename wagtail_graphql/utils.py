@@ -68,7 +68,14 @@ def exclude_invisible_pages(request, pages):
 
 
 def resolve_queryset(
-    qs, info, limit=None, offset=None, search_query=None, pk=None, **kwargs
+    qs,
+    info,
+    limit=None,
+    offset=None,
+    search_query=None,
+    pk=None,
+    order=None,
+    **kwargs
 ):
     """
     Add limit, offset and search capabilities to the query. This contains
@@ -84,6 +91,8 @@ def resolve_queryset(
     :param search_query: Using wagtail search exclude objects that do not match
                          the search query.
     :type search_query: str
+    :param order: Use Django ordering format to order the query set.
+    :type order: str
     """
     offset = int(offset or 0)
 
@@ -100,6 +109,9 @@ def resolve_queryset(
             query.add_hit()
 
         return get_search_backend().search(search_query, qs)
+
+    if order is not None:
+        qs = qs.order_by(*map(lambda x: x.strip(), order.split(',')))
 
     if limit is not None:
         limit = int(limit)
