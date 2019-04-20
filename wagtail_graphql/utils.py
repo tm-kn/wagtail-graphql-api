@@ -73,7 +73,7 @@ def resolve_queryset(
     limit=None,
     offset=None,
     search_query=None,
-    pk=None,
+    id=None,
     order=None,
     **kwargs
 ):
@@ -86,6 +86,8 @@ def resolve_queryset(
     :param info: Graphene's info object.
     :param limit: Limit number of objects in the QuerySet.
     :type limit: int
+    :param id: Filter by the primary key.
+    :type limit: int
     :param offset: Omit a number of objects from the beggining of the query set
     :type offset: int
     :param search_query: Using wagtail search exclude objects that do not match
@@ -96,10 +98,10 @@ def resolve_queryset(
     """
     offset = int(offset or 0)
 
-    if pk is not None:
-        qs = qs.filter(pk=pk)
+    if id is not None:
+        qs = qs.filter(pk=id)
 
-    if pk is None and search_query:
+    if id is None and search_query:
         # Check if the queryset is searchable using Wagtail search.
         if not class_is_indexed(qs.model):
             raise TypeError("This data type is not searchable by Wagtail.")
