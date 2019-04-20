@@ -79,7 +79,7 @@ def resolve_queryset(
     :param info: Graphene's info object.
     :param limit: Limit number of objects in the QuerySet.
     :type limit: int
-    :param offset: Omit a number of objects from the beggining of the query set.
+    :param offset: Omit a number of objects from the beggining of the query set
     :type offset: int
     :param search_query: Using wagtail search exclude objects that do not match
                          the search query.
