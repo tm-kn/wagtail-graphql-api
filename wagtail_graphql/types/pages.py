@@ -33,6 +33,7 @@ class PageInterface(graphene.Interface):
     seo_title = graphene.String()
     seo_description = graphene.String()
     show_in_menus = graphene.Boolean()
+    specific = graphene.Field(lambda: PageInterface)
     children = QuerySetList(lambda: PageInterface, enable_search=True)
     siblings = QuerySetList(lambda: PageInterface, enable_search=True)
     parent = graphene.Field(lambda: PageInterface)
@@ -100,9 +101,12 @@ class PageInterface(graphene.Interface):
             return
         qs = get_base_queryset_for_page_model_or_qs(Page, info, **kwargs)
         try:
-            return qs.get(pk=parent.pk)
+            return qs.get(pk=parent.pk).specific
         except Page.DoesNotExist:
             return
+
+    def resolve_specific(self, info, **kwargs):
+        return self.specific
 
     def resolve_seo_title(self, info):
         """

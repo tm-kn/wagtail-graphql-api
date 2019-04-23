@@ -38,3 +38,10 @@ def lazy_model_type(model):
 
     return lambda: graphene_django.registry.get_global_registry() \
                                            .get_type_for_model(get_model())
+
+
+def lazy_queryset_list(model, **kwargs):
+    def inner():
+        from wagtail_graphql.types import QuerySetList
+        return QuerySetList(lazy_model_type(model), **kwargs)
+    return inner
