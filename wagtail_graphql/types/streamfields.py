@@ -17,7 +17,7 @@ def convert_rich_text(source, request, absolute):
     try:
         from bs4 import BeautifulSoup
     except ImportError:
-        return source
+        return str(RichText(source))
 
     soup = BeautifulSoup(source, 'html5lib')
 
