@@ -42,6 +42,7 @@ def create_model_type(model, fields, meta_attrs=None):
         else:
             # Set a custom resolve function for stream fields
             if isinstance(model._meta.get_field(field.name), StreamField):
+
                 def resolve_stream_field(name):
                     def inner(self, info, **kwargs):
                         init_kwargs = {
@@ -50,9 +51,12 @@ def create_model_type(model, fields, meta_attrs=None):
                         }
                         serializer = StreamFieldSerializer(**init_kwargs)
                         return serializer.serialize(getattr(self, name))
-                    return inner
-                attrs[f'resolve_{field.name}'] = resolve_stream_field(field.name)
 
+                    return inner
+
+                attrs[f'resolve_{field.name}'] = resolve_stream_field(
+                    field.name
+                )
 
     meta = type('Meta', tuple(), new_meta_attrs)
     attrs['Meta'] = meta

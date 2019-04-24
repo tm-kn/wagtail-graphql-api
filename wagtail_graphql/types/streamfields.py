@@ -1,11 +1,11 @@
 import collections
 
-from wagtail.core.blocks import BoundBlock, StreamValue, ListBlock
+from wagtail.core.blocks import BoundBlock, ListBlock, StreamValue
 from wagtail.core.blocks.struct_block import StructValue
 from wagtail.core.rich_text import RichText
 from wagtail.documents.models import get_document_model
-from wagtail.embeds.embeds import get_embed
 from wagtail.embeds.blocks import EmbedValue
+from wagtail.embeds.embeds import get_embed
 from wagtail.images import get_image_model
 
 import graphene
@@ -26,9 +26,12 @@ def convert_rich_text(source, request, absolute):
         if anchor.attrs.get('linktype', '') == 'document':
             try:
                 doc = get_document_model().objects.get(pk=anchor.attrs['id'])
-                new_tag = soup.new_tag('a', href=resolve_absolute_url(
-                    doc.url, request, absolute=absolute
-                ))
+                new_tag = soup.new_tag(
+                    'a',
+                    href=resolve_absolute_url(
+                        doc.url, request, absolute=absolute
+                    )
+                )
                 new_tag.append(*anchor.contents)
                 anchor.replace_with(new_tag)
             except get_document_model().DoesNotExist:
@@ -65,7 +68,9 @@ class StreamFieldSerializer:
             return value
 
         if isinstance(value, RichText):
-            return convert_rich_text(value.source, self.request, self.absolute_urls)
+            return convert_rich_text(
+                value.source, self.request, self.absolute_urls
+            )
 
         if isinstance(value, get_image_model()):
             rendition = value.get_rendition(self.rendition_filter)
