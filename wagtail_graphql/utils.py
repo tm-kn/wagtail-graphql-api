@@ -191,7 +191,7 @@ def resolve_absolute_url(url, request, absolute=True):
     :param absolute: Set to ``True`` if value should be returned as absolute.
     :type absolute: bool
     """
-    if not absolute or urllib.parse.urlparse(url).netloc:
+    if request is None or not absolute or urllib.parse.urlparse(url).netloc:
         return url
 
     return request.build_absolute_uri(url)
