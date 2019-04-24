@@ -1,12 +1,8 @@
 Getting started
 ===============
 
-
-.. toctree::
-   :caption: Contents:
-
 Requirements
-~~~~~~~~~~~~
+------------
 
 * `Python 3 <https://www.python.org/downloads/>`_
 * A `Wagtail project <https://wagtail.io/developers/>`_
@@ -16,7 +12,7 @@ If you do not have a Wagtail project set up, please follow the
 to create one.
 
 Download
-~~~~~~~~
+--------
 
 .. _PyPI: https://pypi.org/project/wagtail-graphql-api
 
@@ -30,7 +26,7 @@ This package should be installed as a dependency of an existing Wagtail
 project.
 
 Configuration
-~~~~~~~~~~~~~
+-------------
 
 The package is a Django application. It needs to be added to your Wagtail
 project's setting file. Also ``graphene_django`` is a package used by
@@ -41,9 +37,9 @@ project's setting file. Also ``graphene_django`` is a package used by
    # settings.py
 
    INSTALLED_APPS = [
-      # The rest of your apps...
-      'graphene_django',
-      'wagtail_graphql',
+       # The rest of your apps...
+       'graphene_django',
+       'wagtail_graphql',
    ]
 
 Next step is to set up `Graphene <https://graphene-python.org/>`_ to use the
@@ -54,7 +50,7 @@ schema provided by ``wagtail-graphql-api``.
    # settings.py
 
    GRAPHENE = {
-      'SCHEMA': 'wagtail_graphql.schema.schema'
+       'SCHEMA': 'wagtail_graphql.schema.schema'
    }
 
 After that is done, the GraphQL endpoint has to be exposed in the URL
@@ -70,10 +66,16 @@ is a `urls.py` file.
    from graphene_django.views import GraphQLView
 
    urlpatterns = [
-      # Other URL paths...
-      path('graphql/', GraphQLView.as_view(graphiql=True, pretty=True)),
-      # Other URL paths...
+       # Other URL paths...
+       path('graphql/', GraphQLView.as_view(graphiql=True, pretty=True)),
+       # Other URL paths...
    ]
 
 Then after the development server is started (``./manage.py runserver``), the
 GraphQL endpoint should be accessible via http://localhost:8000/graphql/.
+
+
+.. toctree::
+   :maxdepth: 1
+
+   integrate_models

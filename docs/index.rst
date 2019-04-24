@@ -6,13 +6,11 @@
 Welcome to wagtail-graphql-api's documentation!
 ===============================================
 
+Index
+-----
 .. toctree::
-   :maxdepth: 1
-   :caption: Contents:
+   :maxdepth: 2
+   :titlesonly:
 
    getting_started/index
    api/index
-
-
-
-* :ref:`genindex`
