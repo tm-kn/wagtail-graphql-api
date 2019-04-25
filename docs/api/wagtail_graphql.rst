@@ -1,5 +1,5 @@
-wagtail\_graphql package
-========================
+API reference
+=============
 
 Subpackages
 -----------
@@ -8,7 +8,6 @@ Subpackages
 
     wagtail_graphql.inventory
     wagtail_graphql.query_mixins
-    wagtail_graphql.tests
     wagtail_graphql.types
 
 Submodules

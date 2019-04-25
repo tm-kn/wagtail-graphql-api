@@ -15,4 +15,4 @@ Index
 
    getting_started/index
    static_sites_gatsbyjs/index
-   api/index
+   api/wagtail_graphql
