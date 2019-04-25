@@ -49,7 +49,7 @@ Before generating the site, the Django server must be started (``./manage.py
 runserver`` in the Wagtail's project directory). Next step is to point at the
 server location using an environment variable or ``.env`` file. It should be
 sufficient to copy ``.env.example`` to ``.env`` (``cp .env.example .env``). The
-contents need to show the path to the GraphQL endpoint, e.g.
+contents of ``.env`` need to show the path to the GraphQL endpoint, e.g.
 
 .. code:: sh
 
@@ -58,3 +58,9 @@ contents need to show the path to the GraphQL endpoint, e.g.
 Then the Gatsby development server can be started by executing ``npm start``.
 After the server started, the command line should output a link which can be
 used to access the website (by default http://localhost:9000/).
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   custom_page_types
