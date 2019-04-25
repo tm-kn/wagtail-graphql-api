@@ -66,6 +66,18 @@ html_theme = 'sphinx_rtd_theme'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+html_domain_indices = False
+
+latex_domain_indices = False
+
+latex_elements = {
+  'extraclassoptions': 'openany,oneside',
+  'printindex': ''
+}
+
+latex_show_urls = 'inline'
+
+latex_show_pagerefs = True
 
 master_doc = 'index'
 
