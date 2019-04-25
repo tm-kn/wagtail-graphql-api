@@ -90,7 +90,6 @@ built-in in the ``QuerySetList``, the queryset has to be filtered through
 page :func:`wagtail_graphql.utils.get_base_queryset_for_page_model_or_qs` must
 be used.
 
-
 .. code-block:: python
    :emphasize-lines: 21
 

@@ -81,3 +81,5 @@ GraphQL endpoint should be accessible via http://localhost:8000/graphql/.
 
    integrate_models
    fields_customisation
+   querying
+   images
