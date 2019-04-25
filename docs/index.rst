@@ -11,6 +11,8 @@ Index
 .. toctree::
    :maxdepth: 2
    :titlesonly:
+   :includehidden:
 
    getting_started/index
+   static_sites_gatsbyjs/index
    api/index

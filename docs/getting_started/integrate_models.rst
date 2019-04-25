@@ -6,7 +6,7 @@ By default the library will only add a GraphQL pages endpoint for the
 <https://docs.wagtail.io/en/stable/reference/pages/model_reference.html#page>`_.
 It can be queried via the GraphQL endpoint with the following query:
 
-.. code:: graphql
+.. code::
 
    query {
      pages {
@@ -26,7 +26,8 @@ To query any specific page model fields, it needs to first be registered. To do
 that the page model has to inherit
 :class:`wagtail_graphql.models.GraphQLEnabledModel`.
 
-.. code:: python
+.. code-block:: python
+   :emphasize-lines: 8
 
    # blog/models.py
    from wagtail.core.fields import StreamField
@@ -44,7 +45,7 @@ Assuming that the model exists under the ``blog`` app, it should be possible to
 query it with the following query:
 
 
-.. code:: graphql
+.. code::
 
    query {
      pages {
@@ -66,7 +67,8 @@ requires adding ``graphql_fields`` list with
 :class:`wagtail_graphql.models.GraphQLField` instances to the model definition,
 e.g.
 
-.. code:: python
+.. code-block:: python
+   :emphasize-lines: 13-16
 
    # blog/models.py
    from wagtail.core.fields import StreamField
@@ -87,7 +89,7 @@ e.g.
 
 Now those fields should be accessible via the endpoint in the following way:
 
-.. code:: graphql
+.. code::
 
    query {
      pages {
