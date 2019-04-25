@@ -20,8 +20,8 @@ It can be queried via the GraphQL endpoint with the following query:
      }
    }
 
-Enabling model to be accessible via GraphQL endpoint
-----------------------------------------------------
+Enabling page model to be accessible via GraphQL endpoint
+---------------------------------------------------------
 To query any specific page model fields, it needs to first be registered. To do
 that the page model has to inherit
 :class:`wagtail_graphql.models.GraphQLEnabledModel`.
@@ -59,8 +59,8 @@ query it with the following query:
      }
    }
 
-Specifing GraphQL fields
-------------------------
+Specifying GraphQL fields
+-------------------------
 
 The fields exposed in the endpoint will also have to be explicitly defined. It
 requires adding ``graphql_fields`` list with
@@ -101,3 +101,31 @@ Now those fields should be accessible via the endpoint in the following way:
        }
      }
    }
+
+Snippets
+--------
+
+Snippets that inherit :class:`wagtail_graphql.models.GraphQLEnabledModel` will
+be accessible via the GraphQL endpoint. The query structure is as follows:
+
+.. code-block::
+
+   query {
+     snippets {
+       appLabel {
+         modelName {
+           id
+         }
+      }
+     }
+   }
+
+Custom models
+-------------
+
+Custom models object types can also be added to the GraphQL schema with this
+library in the same way as page models or snippets.
+The only difference to the snippets and pages is that that it will
+not be query-able. The sole point will be to register the object type in the
+schema so it can be used to resolve related objects or can be used as a custom
+field types without having to manually specify the Graphene type.
