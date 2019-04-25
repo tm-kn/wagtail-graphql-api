@@ -86,3 +86,4 @@ from a third-party service such as S3.
 
    custom_page_types
    stream_fields
+   deployment/index

@@ -1,5 +1,5 @@
-Streamfields definition in GatsbyJS
-===================================
+Streamfields
+============
 
 Each Wagtail project will have its own definition of stream field blocks.
 ``wagtail-graphql-api`` does a job of serialising them. However each of the
