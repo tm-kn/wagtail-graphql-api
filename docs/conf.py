@@ -75,7 +75,7 @@ latex_elements = {
   'printindex': ''
 }
 
-latex_show_urls = 'inline'
+latex_show_urls = 'footnote'
 
 latex_show_pagerefs = True
 
