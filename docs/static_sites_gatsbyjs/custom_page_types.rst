@@ -65,7 +65,7 @@ In this example a ``locations.LocationPage`` model is used.
 
 To define a custom type you need to create a new React component.
 
-.. code:: javascript
+.. code:: jsx
 
    // src/components/pages/location-page.js
    import React from 'react';
@@ -107,7 +107,7 @@ To define a custom type you need to create a new React component.
 
    export default LocationPage;
 
-Then in ``gatsby-node.js`` the page type has to be added:
+Then in ``gatsby-node.js`` the page type has to be linked with that component.
 
 .. code:: javascript
 
@@ -124,3 +124,30 @@ page object (it is case sensitive).
 
 After that the Gatsby server has to be restarted and the new component should
 be used for instances of the new page type.
+
+Rich text
+~~~~~~~~~
+
+The template comes with a pre-defined component to be used as RichText
+container, e.g.
+
+.. code-block:: jsx
+   :emphasize-lines: 2, 11
+
+   // src/pages/home-page.js
+   import RichText from '../components/rich-text';
+
+   const HomePage = ({ data }) => {
+      const page = data.pages.home.homePage[0];
+
+      return (
+         <div>
+            {/* Any other components */}
+            <h1>{page.title}</h1>
+            <RichText>{page.promoText}</RichText>
+            {/* Any other components */}
+         </div>
+      )
+   }
+
+   export default HomePage;

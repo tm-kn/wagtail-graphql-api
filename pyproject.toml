@@ -25,5 +25,5 @@ description-file="README.rst"
 doc = [
     "Sphinx >= 2, <2.1",
     "sphinx-rtd-theme >= 0.4, <0.5",
-    "jsx-lexer >= 0.0.6, < 0.1"
+    "jsx-lexer >= 0.0.6, < 0.1",
 ]

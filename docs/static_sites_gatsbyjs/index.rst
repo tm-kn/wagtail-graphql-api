@@ -59,8 +59,30 @@ Then the Gatsby development server can be started by executing ``npm start``.
 After the server started, the command line should output a link which can be
 used to access the website (by default http://localhost:9000/).
 
+Media & documents
+-----------------
+
+If the CMS website is supposed to be hidden from the public, there are
+two topics that need to be covered:
+
+* Media files such as images
+* Documents
+
+The media files have to be served from a third-party service or via a proxy.
+The API will return absolute links to images by default. If they are server
+from the same web server as CMS, the proxy needs to be set up. A third-party
+storage service like `AWS S3 <https://aws.amazon.com/s3/>`_ can be used as
+well.
+
+Wagtail documents rely on privacy-checks carried out in a Python code. The
+proxy should be used to route to the documents if back-end needs to be
+disguised. If all documents are deemed to be public, they can also be served
+from a third-party service such as S3.
+
+
 .. toctree::
    :maxdepth: 1
    :hidden:
 
    custom_page_types
+   stream_fields
