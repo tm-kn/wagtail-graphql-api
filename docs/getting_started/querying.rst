@@ -112,7 +112,7 @@ The commonly used Wagtail methods available on any page type are:
    * ``ancestors``
 
 Pages query mixin
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
 
 The pages query mixin adds two parameters to the standard ``QuerySetList`` set:
 
