@@ -62,7 +62,7 @@ def create_query_mixin():
     pages_by_app_type = get_pages_type()
 
     if not pages_by_app_type:
-        return type('EmptyPageQueryMixin')
+        return type('EmptyPageQueryMixin', tuple(), {})
 
     return type(
         'PageQueryMixin', tuple(), {

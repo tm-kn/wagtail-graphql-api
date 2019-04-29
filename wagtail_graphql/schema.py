@@ -12,13 +12,13 @@ from wagtail_graphql.query_mixins import (
 if settings.WAGTAIL_GRAPHQL_ENABLE_IMAGES is True:
     image_query_mixin_cls = ImageQueryMixin
 else:
-    image_query_mixin_cls = type('DisabledImageQueryMixin')
+    image_query_mixin_cls = type('DisabledImageQueryMixin', tuple(), {})
 
 # Allow enabling the documents endpoint
 if settings.WAGTAIL_GRAPHQL_ENABLE_DOCUMENTS is True:
     documents_query_mixin_cls = DocumentQueryMixin
 else:
-    documents_query_mixin_cls = type('DisabledDocumentQueryMixin')
+    documents_query_mixin_cls = type('DisabledDocumentQueryMixin', tuple(), {})
 
 
 class WagtailQuery(

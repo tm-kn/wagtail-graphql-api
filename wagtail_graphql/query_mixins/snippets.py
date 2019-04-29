@@ -51,7 +51,7 @@ def create_query_mixin():
     snippets_by_app_type = get_snippets_by_app_type()
 
     if not snippets_by_app_type:
-        return type('EmptySnippetQueryMixin')
+        return type('EmptySnippetQueryMixin', tuple(), {})
 
     class SnippetQueryMixinMeta:
         description = _('Object that contains all snippet-related data.')
