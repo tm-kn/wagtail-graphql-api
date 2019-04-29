@@ -49,6 +49,7 @@ def set_settings():
         django.conf.settings, 'WAGTAIL_GRAPHQL_ENABLE_DOCUMENTS', True
     )
 
+
 # Set default settings
 set_settings()
 
@@ -57,6 +58,7 @@ def reload_settings(**kwargs):
     setting = kwargs['setting']
     if setting.startswith('WAGTAIL_GRAPHQL_'):
         set_settings()
+
 
 # Reload settings when they change during unit testing.
 setting_changed.connect(reload_settings)
