@@ -8,22 +8,10 @@ from wagtail_graphql.query_mixins import (
     SnippetQueryMixin
 )
 
-# Allow enabling the images endpoint
-if settings.WAGTAIL_GRAPHQL_ENABLE_IMAGES is True:
-    image_query_mixin_cls = ImageQueryMixin
-else:
-    image_query_mixin_cls = type('DisabledImageQueryMixin', tuple(), {})
-
-# Allow enabling the documents endpoint
-if settings.WAGTAIL_GRAPHQL_ENABLE_DOCUMENTS is True:
-    documents_query_mixin_cls = DocumentQueryMixin
-else:
-    documents_query_mixin_cls = type('DisabledDocumentQueryMixin', tuple(), {})
-
 
 class WagtailQuery(
     graphene.ObjectType, PageQueryMixin, SnippetQueryMixin,
-    image_query_mixin_cls, CurrentSiteMixin, documents_query_mixin_cls
+    ImageQueryMixin, CurrentSiteMixin, DocumentQueryMixin
 ):
     """
     Main GraphQL query used directly by the endpoint.

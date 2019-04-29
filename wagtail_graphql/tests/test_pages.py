@@ -2,22 +2,10 @@ import json
 
 from django import test
 
-from wagtail.core.models import Site
-
-from graphene_django.views import GraphQLView
+from wagtail_graphql.tests.utils import GraphQLQueryTestCaseMixin
 
 
-class TestGraphQLPages(test.TestCase):
-    def setUp(self):
-        self.request_factory = test.RequestFactory()
-
-    def _graphql_query(self, query):
-        request = self.request_factory.post('/', {
-            'query': query
-        })
-        request.site = Site.objects.first()
-        return GraphQLView.as_view()(request)
-
+class TestGraphQLPages(GraphQLQueryTestCaseMixin, test.TestCase):
     def test_graphql_pages_query_returns_200_ok(self):
         query = """
         query {
@@ -30,7 +18,7 @@ class TestGraphQLPages(test.TestCase):
             }
         }
         """
-        response = self._graphql_query(query)
+        response = self.graphql_query(query)
         self.assertEqual(response.status_code, 200)
         self.assertNotIn('errors', json.loads(response.content))
 
@@ -46,6 +34,6 @@ class TestGraphQLPages(test.TestCase):
             }
         }
         """
-        response = self._graphql_query(query)
+        response = self.graphql_query(query)
         self.assertEqual(response.status_code, 200)
         self.assertNotIn('errors', json.loads(response.content))
