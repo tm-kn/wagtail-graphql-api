@@ -4,6 +4,8 @@ wagtail-graphql-api
 GraphQL module for the `Wagtail CMS <https://wagtail.io/>`_. It is based on
 the `Graphene framework <https://graphene-python.org/>`_.
 
+Documentation is available at https://wagtail-graphql-api.readthedocs.io/.
+
 Documentation
 ~~~~~~~~~~~~~
 
